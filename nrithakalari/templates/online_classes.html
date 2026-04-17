@@ -1,0 +1,99 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div style="max-width:1200px;margin:40px auto;padding:20px;">
+    <h2 style="text-align:center;color:#8B0000;margin-bottom:20px;">Online Classes</h2>
+
+    {% if notifications %}
+        <div style="overflow:auto;border-radius:16px;border:1px solid #eee;background:white;margin-bottom:18px;">
+            <div style="padding:14px 16px;border-bottom:1px solid #eee;font-weight:900;color:#333;">
+                Class Reminders
+            </div>
+            <div style="padding:10px 16px;">
+                {% for n in notifications %}
+                    <div style="padding:12px 10px;border-bottom:1px solid #f2f2f2;">
+                        <div style="font-weight:900;color:#333;margin-bottom:6px;">
+                            {{ n.message }}
+                        </div>
+                        <div style="font-size:12px;color:#666;margin-bottom:8px;">
+                            Due: {{ n.due_at }}
+                        </div>
+                        <form method="POST" action="{% url 'mark_notification_read' n.id %}">
+                            {% csrf_token %}
+                            <button type="submit" style="padding:8px 12px;border:none;border-radius:12px;background:#eee;color:#333;font-weight:900;cursor:pointer;">
+                                Mark as read
+                            </button>
+                        </form>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    {% endif %}
+
+    {% if not is_online_timetable_student %}
+        <div style="background:#fff7e6;border:1px solid #ffe2a8;border-radius:20px;padding:18px;color:#333;text-align:center;margin-bottom:18px;">
+            Online class schedules are available only when your timetable mode is set to <b>Online</b>.
+        </div>
+    {% endif %}
+
+    <div style="overflow:auto;border-radius:16px;border:1px solid #eee;background:white;">
+        <table style="width:100%;border-collapse:collapse;">
+            <thead>
+                <tr style="background:#fafafa;">
+                    <th style="text-align:left;padding:12px 14px;border-bottom:1px solid #eee;">Title</th>
+                    <th style="text-align:left;padding:12px 14px;border-bottom:1px solid #eee;">Scheduled At</th>
+                    <th style="text-align:left;padding:12px 14px;border-bottom:1px solid #eee;">Join</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% if online_classes %}
+                    {% for c in online_classes %}
+                        <tr>
+                            <td style="padding:12px 14px;border-bottom:1px solid #f2f2f2;">
+                                <div style="font-weight:900;color:#333;margin-bottom:4px;">{{ c.title }}</div>
+                                {% if c.description %}
+                                    <div style="font-size:13px;color:#666;max-width:520px;word-break:break-word;">{{ c.description }}</div>
+                                {% endif %}
+                            </td>
+                            <td style="padding:12px 14px;border-bottom:1px solid #f2f2f2;">
+                                {{ c.scheduled_at }}
+                            </td>
+                            <td style="padding:12px 14px;border-bottom:1px solid #f2f2f2;">
+                                {% if can_join %}
+                                    <a href="{{ c.meeting_url }}" target="_blank" rel="noopener"
+                                       style="display:inline-block;padding:10px 14px;border-radius:14px;background:#8B1E3F;color:white;font-weight:900;text-decoration:none;">
+                                        Join
+                                    </a>
+                                {% else %}
+                                    {% if is_online_timetable_student %}
+                                        <div style="font-size:13px;color:#b00020;font-weight:900;margin-bottom:10px;">
+                                            {{ fee_due_message }}
+                                        </div>
+                                        <div>
+                                            <a href="{% url 'monthly_fee_payment' %}"
+                                               style="display:inline-block;padding:10px 14px;border-radius:14px;background:#eee;color:#333;font-weight:900;text-decoration:none;">
+                                                Pay Monthly Fee
+                                            </a>
+                                        </div>
+                                    {% else %}
+                                        <div style="font-size:13px;color:#666;font-weight:900;">
+                                            Not available for your timetable mode.
+                                        </div>
+                                    {% endif %}
+                                {% endif %}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                {% else %}
+                    <tr>
+                        <td colspan="3" style="padding:18px;color:#555;text-align:center;">
+                            No upcoming online classes found.
+                        </td>
+                    </tr>
+                {% endif %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}
+

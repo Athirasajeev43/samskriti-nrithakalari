@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="timetable-layout">
+
+    <!-- LEFT SIDE (TIMETABLE) -->
+    <div class="timetable-left">
+
+        <h2 class="timetable-title">
+            Timetable for {{ course.name }}
+        </h2>
+
+        {% if timetable_entries %}
+        <form method="POST" action="{% url 'join_timetable' %}">
+            {% csrf_token %}
+
+            <div class="timetable-grid">
+                {% for entry in timetable_entries %}
+                <label class="timetable-card">
+
+                    <input type="radio" name="timetable" value="{{ entry.id }}" required>
+
+                    <div>
+                        <div class="timetable-day">
+                            {{ entry.day }} - {{ entry.time }}
+                        </div>
+                        <div class="timetable-mode">
+                            Mode: <b>{{ entry.mode }}</b>
+                        </div>
+                    </div>
+
+                </label>
+                {% endfor %}
+            </div>
+
+            <button type="submit" class="select-btn">
+                Continue to Payment
+            </button>
+        </form>
+        {% else %}
+            <p class="no-data">No timetable entries found.</p>
+        {% endif %}
+
+    </div>
+
+
+    <!-- RIGHT SIDE (PROGRAM BOX) -->
+    <div class="program-box">
+
+        <h3>Upcoming Programs</h3>
+
+        {% if upcoming_programs %}
+            {% for p in upcoming_programs %}
+                <div class="program-item">
+                    <b>{{ p.title }}</b><br>
+                    <span>{{ p.starts_at }}</span>
+                </div>
+            {% endfor %}
+        {% else %}
+            <p class="no-program">No upcoming programs found.</p>
+        {% endif %}
+
+    </div>
+
+</div>
+{% endblock %}

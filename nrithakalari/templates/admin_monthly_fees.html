@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div style="max-width:1200px;margin:40px auto;padding:20px;">
+    <h2 style="text-align:center;color:#8B0000;margin-bottom:20px;">Monthly Fees (Current Cycle)</h2>
+
+    <div style="overflow:auto;border-radius:16px;border:1px solid #eee;background:white;">
+        <table style="width:100%;border-collapse:collapse;">
+            <thead>
+                <tr style="background:#fafafa;">
+                    <th style="text-align:left;padding:12px 14px;border-bottom:1px solid #eee;">Student</th>
+                    <th style="text-align:left;padding:12px 14px;border-bottom:1px solid #eee;">Course</th>
+                    <th style="text-align:left;padding:12px 14px;border-bottom:1px solid #eee;">Cycle</th>
+                    <th style="text-align:left;padding:12px 14px;border-bottom:1px solid #eee;">Cycle Start</th>
+                    <th style="text-align:left;padding:12px 14px;border-bottom:1px solid #eee;">Status</th>
+                    <th style="text-align:left;padding:12px 14px;border-bottom:1px solid #eee;">Payment ID</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for row in rows %}
+                    <tr>
+                        <td style="padding:12px 14px;border-bottom:1px solid #f2f2f2;">{{ row.profile.user.username }}</td>
+                        <td style="padding:12px 14px;border-bottom:1px solid #f2f2f2;">
+                            {% if row.profile.selected_course %}
+                                {{ row.profile.selected_course.name }}
+                            {% else %}
+                                -
+                            {% endif %}
+                        </td>
+                        <td style="padding:12px 14px;border-bottom:1px solid #f2f2f2;">{{ row.cycle_key }}</td>
+                        <td style="padding:12px 14px;border-bottom:1px solid #f2f2f2;">{{ row.cycle_start }}</td>
+                        <td style="padding:12px 14px;border-bottom:1px solid #f2f2f2;">
+                            {% if row.paid %}
+                                <span style="color:green;font-weight:900;">Paid</span>
+                            {% else %}
+                                <span style="color:#b00020;font-weight:900;">Pending</span>
+                            {% endif %}
+                        </td>
+                        <td style="padding:12px 14px;border-bottom:1px solid #f2f2f2;">
+                            {% if row.payment %}
+                                {{ row.payment.payment_id }}
+                            {% else %}
+                                -
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% empty %}
+                    <tr>
+                        <td colspan="6" style="padding:18px;color:#555;text-align:center;">
+                            No students found.
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}
+

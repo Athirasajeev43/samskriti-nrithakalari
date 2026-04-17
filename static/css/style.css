@@ -1,0 +1,489 @@
+/* =========================
+   GLOBAL STYLES
+========================= */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background: #f5f5f5;
+    color: #333;
+}
+
+/* =========================
+   HERO SECTION
+========================= */
+.hero {
+    height: 103vh;
+    background: url("../images/1.jpeg") no-repeat center 35%;
+    background-size: cover;
+    position: relative;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+        135deg,
+        rgba(0,0,0,0.4),
+        rgba(139,0,0,0.4)
+    );
+}
+
+/* Hero Content */
+.hero-content {
+    text-align: center;
+    position: relative;
+    z-index: 1;
+    max-width: 800px;
+}
+
+.hero h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 60px;
+    color: white;
+    margin-bottom: 15px;
+}
+
+.hero p {
+    font-size: 22px;
+    color: #f1f1f1;
+    margin-bottom: 25px;
+}
+
+.hero-buttons {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+}
+
+/* COMMON */
+.hero .btn {
+    padding: 14px 32px;
+    border-radius: 50px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: 0.3s;
+}
+
+/* REGISTER */
+.hero .btn:first-child {
+    background: linear-gradient(135deg, #8B0000, #ff7a18);
+    color: white;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+}
+
+/* LOGIN */
+.hero .btn:last-child {
+    border: 2px solid white;
+    color: white;
+    background: transparent;
+}
+
+/* HOVER */
+.hero .btn:hover {
+    transform: translateY(-3px) scale(1.05);
+}
+
+.hero .btn:last-child:hover {
+    background: white;
+    color: #8B0000;
+}
+/* =========================
+   SLIDER SECTION
+========================= */
+.slider-wrapper {
+    overflow: hidden;
+    padding: 60px 0;
+    background: white;
+}
+
+.slider-track {
+    display: flex;
+    gap: 30px;
+    width: max-content;
+    animation: autoSlide 25s linear infinite;
+}
+
+/* Pause on hover */
+.slider-wrapper:hover .slider-track {
+    animation-play-state: paused;
+}
+
+/* =========================
+   CARD DESIGN
+========================= */
+.card {
+    min-width: 400px;
+    height: 160px;
+    border-radius: 25px;
+    background: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-decoration: none;
+    color: #333;
+    font-weight: 600;
+    transition: all 0.4s ease;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+    position: relative;
+    overflow: hidden;
+}
+
+/* ICON */
+.card span {
+    font-size: 32px;
+    margin-bottom: 10px;
+}
+
+/* TEXT */
+.card h3 {
+    font-size: 18px;
+}
+
+/* Gradient overlay */
+.card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, #8B0000, #ff7a18);
+    opacity: 0;
+    transition: 0.4s;
+    z-index: 0;
+}
+
+/* Hover effect */
+.card:hover {
+    transform: translateY(-12px) scale(1.05);
+    color: white;
+    box-shadow: 0 25px 50px rgba(0,0,0,0.2);
+}
+
+.card:hover::before {
+    opacity: 1;
+}
+
+/* Keep content above */
+.card * {
+    position: relative;
+    z-index: 1;
+}
+
+/* =========================
+   COURSES SECTION
+========================= */
+.courses {
+    text-align: center;
+    padding: 70px 20px;
+    background: #f5f5f5;
+}
+
+.courses h2 {
+    font-size: 32px;
+    margin-bottom: 30px;
+}
+
+/* Course Container */
+.course-container {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    flex-wrap: wrap;
+}
+
+/* Course Card */
+.course {
+    width: 260px;
+    background: white;
+    border-radius: 15px;
+    overflow: hidden;
+    transition: 0.3s;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+}
+
+/* Image */
+.course img {
+    width: 100%;
+    display: block;
+}
+
+/* Hover */
+.course:hover {
+    transform: translateY(-10px) scale(1.05);
+}
+
+/* =========================
+   ANIMATIONS
+========================= */
+@keyframes autoSlide {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+}
+
+@keyframes fadeUp {
+    from {
+        opacity: 0;
+        transform: translateY(40px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* =========================
+   RESPONSIVE DESIGN
+========================= */
+@media (max-width: 768px) {
+
+    .hero h1 {
+        font-size: 36px;
+    }
+
+    .hero p {
+        font-size: 16px;
+    }
+
+    .card {
+        min-width: 200px;
+        height: 130px;
+    }
+
+    .course {
+        width: 90%;
+    }
+
+    .slider-track {
+        gap: 15px;
+    }
+}
+/* SIDEBAR FIX */
+.sidebar {
+    position: fixed;
+    top: 0;
+    left: -260px;   /* hidden initially */
+    width: 260px;
+    height: 100%;
+    background: #111;
+    padding-top: 70px;
+    transition: 0.3s;
+    z-index: 1000;
+}
+
+/* SHOW SIDEBAR */
+.sidebar.show {
+    left: 0;
+}
+
+/* FORCE VERTICAL LINKS */
+.sidebar a {
+    display: block;              /* IMPORTANT */
+    padding: 14px 20px;
+    color: white;
+    text-decoration: none;
+    font-size: 15px;
+}
+
+/* HOVER */
+.sidebar a:hover {
+    background: #8B0000;
+}
+/* ===== SELECT COURSE BUTTON ===== */
+.select-btn {
+    margin-top: 12px;
+    padding: 10px 18px;
+    border: none;
+    border-radius: 25px;
+    background: linear-gradient(135deg, #8B0000, #ff7a18);
+    color: white;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 6px 15px rgba(0,0,0,0.2);
+}
+
+/* HOVER */
+.select-btn:hover {
+    transform: translateY(-3px) scale(1.05);
+    box-shadow: 0 12px 25px rgba(0,0,0,0.3);
+}
+
+/* CLICK EFFECT */
+.select-btn:active {
+    transform: scale(0.95);
+}
+/* ===== LAYOUT ===== */
+.timetable-layout {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 30px;
+    max-width: 1200px;
+    margin: 40px auto;
+    padding: 20px;
+}
+
+/* LEFT SIDE */
+.timetable-left {
+    background: transparent;
+}
+
+/* TITLE */
+.timetable-title {
+    text-align: center;
+    color: #8B0000;
+    margin-bottom: 20px;
+}
+
+/* ===== PROGRAM BOX (RIGHT SIDE) ===== */
+.program-box {
+    background: white;
+    padding: 20px;
+    border-radius: 20px;
+    height: fit-content;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+    border-left: 5px solid #8B0000;
+}
+
+.program-box h3 {
+    color: #8B0000;
+    margin-bottom: 15px;
+}
+
+/* PROGRAM ITEMS */
+.program-item {
+    padding: 10px 0;
+    border-bottom: 1px solid #eee;
+}
+
+.program-item:last-child {
+    border-bottom: none;
+}
+
+.no-program {
+    color: #777;
+}
+
+/* ===== TIMETABLE ===== */
+.timetable-grid {
+    display: grid;
+    gap: 15px;
+}
+
+/* CARD */
+.timetable-card {
+    background: white;
+    border-radius: 16px;
+    padding: 15px;
+    border: 1px solid #eee;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.timetable-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+}
+
+.timetable-day {
+    font-weight: 700;
+    color: #b00020;
+}
+
+.timetable-mode {
+    color: #555;
+}
+
+/* BUTTON */
+.select-btn {
+    display: block;
+    margin: 25px auto 0;
+    padding: 12px 25px;
+    border-radius: 25px;
+    border: none;
+    background: linear-gradient(135deg, #8B0000, #ff7a18);
+    color: white;
+    font-weight: 600;
+    cursor: pointer;
+}
+/* PAGE */
+.timetable-page {
+    max-width: 1100px;
+    margin: 40px auto;
+    padding: 20px;
+}
+
+/* TITLE */
+.timetable-title {
+    text-align: center;
+    color: #8B0000;
+    margin-bottom: 30px;
+}
+
+/* ===== PROGRAM BOX ===== */
+.program-box {
+    background: white;
+    padding: 20px;
+    border-radius: 18px;
+    margin-bottom: 30px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+    border-left: 5px solid #8B0000;
+}
+
+.program-box h3 {
+    color: #8B0000;
+    margin-bottom: 15px;
+}
+
+/* PROGRAM ITEMS */
+.program-item {
+    padding: 10px 0;
+    border-bottom: 1px solid #eee;
+}
+
+.program-item:last-child {
+    border-bottom: none;
+}
+
+/* EMPTY TEXT */
+.no-program {
+    color: #777;
+}
+
+/* ===== TABLE ===== */
+.table-box {
+    background: white;
+    border-radius: 18px;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+}
+
+.main-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.main-table th {
+    background: #fafafa;
+    padding: 14px;
+    text-align: left;
+    font-weight: 600;
+}
+
+.main-table td {
+    padding: 14px;
+    border-bottom: 1px solid #f2f2f2;
+}
+
+/* HOVER EFFECT */
+.main-table tr:hover {
+    background: #f9f9f9;
+}

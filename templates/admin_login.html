@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Admin Login</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        .login-container {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 22px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.35);
+            width: 100%;
+            max-width: 460px;
+            padding: 40px;
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+        h2 { margin: 0 0 10px 0; color: #333; }
+        .hint { color: #666; margin-bottom: 25px; }
+        label { display:block; margin-bottom:8px; font-weight:700; font-size:13px; text-transform:uppercase; letter-spacing:0.5px; }
+        input {
+            width: 100%;
+            padding: 14px 14px;
+            border-radius: 12px;
+            border: 2px solid #e0e0e0;
+            margin-bottom: 18px;
+            font-size: 15px;
+        }
+        button {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: none;
+            color: white;
+            font-size: 16px;
+            font-weight: 800;
+            border-radius: 12px;
+            cursor: pointer;
+        }
+        .footer-link { margin-top: 18px; color: #666; font-size: 13px; }
+        .footer-link a { color: #667eea; text-decoration: none; font-weight: 700; }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <h2>Admin Login</h2>
+        <div class="hint">Login to manage the academy system.</div>
+
+        
+
+        <form method="POST">
+            {% csrf_token %}
+
+            <label>Username</label>
+            <input type="text" name="username" placeholder="Enter admin username" required>
+
+            <label>Password</label>
+            <input type="password" name="password" placeholder="Enter admin password" required>
+
+            <button type="submit">Login</button>
+        </form>
+
+        <div class="footer-link">
+            Student login:
+            <a href="{% url 'login' %}">Click here</a>
+        </div>
+    </div>
+</body>
+</html>
+

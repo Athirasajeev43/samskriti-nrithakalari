@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div style="max-width:1000px;margin:40px auto;padding:30px;">
+    <h2 style="text-align:center;color:#8B0000;margin-bottom:25px;">Contact Us</h2>
+
+    <div style="background:white;border:1px solid #eee;border-radius:20px;padding:20px;box-shadow:0 10px 40px rgba(0,0,0,0.04);margin-bottom:25px;">
+        <h3 style="text-align:center;color:#8B1E3F;margin-bottom:12px;">Our Contact Information</h3>
+        {% if contact_info %}
+            {% if contact_info.phone %}
+                <div style="margin-bottom:10px;"><b>Phone:</b> {{ contact_info.phone }}</div>
+            {% endif %}
+            {% if contact_info.email %}
+                <div style="margin-bottom:10px;"><b>Email:</b> {{ contact_info.email }}</div>
+            {% endif %}
+            {% if contact_info.address %}
+                <div style="margin-bottom:0;"><b>Address:</b><br/>{{ contact_info.address }}</div>
+            {% endif %}
+        {% else %}
+            <p style="text-align:center;color:#555;margin:0;">Contact information not available.</p>
+        {% endif %}
+    </div>
+
+    <div style="background:white;border:1px solid #eee;border-radius:20px;padding:20px;box-shadow:0 10px 40px rgba(0,0,0,0.04);">
+        <form method="POST">
+            {% csrf_token %}
+
+            <div style="margin-bottom:14px;">
+                <label style="display:block;margin-bottom:8px;font-weight:900;color:#333;">Name</label>
+                {{ form.name }}
+            </div>
+
+            <div style="margin-bottom:14px;">
+                <label style="display:block;margin-bottom:8px;font-weight:900;color:#333;">Email</label>
+                {{ form.email }}
+            </div>
+
+            <div style="margin-bottom:14px;">
+                <label style="display:block;margin-bottom:8px;font-weight:900;color:#333;">Phone</label>
+                {{ form.phone }}
+            </div>
+
+            <div style="margin-bottom:14px;">
+                <label style="display:block;margin-bottom:8px;font-weight:900;color:#333;">Message</label>
+                {{ form.message }}
+            </div>
+
+            <button type="submit" style="padding:12px 18px;border:none;border-radius:14px;background:#8B1E3F;color:white;font-weight:900;cursor:pointer;width:100%;">
+                Send Message
+            </button>
+        </form>
+    </div>
+</div>
+{% endblock %}
+

@@ -1,0 +1,112 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div style="max-width:1200px;margin:40px auto;padding:30px;">
+    <h2 style="text-align:center;color:#8B0000;margin-bottom:25px;">Admin Dashboard</h2>
+
+    <div style="text-align:right;margin-bottom:18px;">
+        <a
+            href="{% url 'admin_profile' %}"
+            style="color:#667eea;font-weight:800;text-decoration:none;"
+        >
+            Edit My Admin Profile
+        </a>
+    </div>
+
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;margin-bottom:22px;">
+        <div style="background:#fff;border:1px solid #eee;border-radius:18px;padding:16px;">
+            <b>Courses:</b> {{ courses_count }}
+        </div>
+        <div style="background:#fff;border:1px solid #eee;border-radius:18px;padding:16px;">
+            <b>Timetables:</b> {{ timetables_count }}
+        </div>
+        <div style="background:#fff;border:1px solid #eee;border-radius:18px;padding:16px;">
+            <b>Instructors:</b> {{ instructors_count }}
+        </div>
+        <div style="background:#fff;border:1px solid #eee;border-radius:18px;padding:16px;">
+            <b>Gallery Images:</b> {{ gallery_count }}
+        </div>
+        <div style="background:#fff;border:1px solid #eee;border-radius:18px;padding:16px;">
+            <b>Registered Students:</b> {{ students_count }}
+        </div>
+        <div style="background:#fff;border:1px solid #eee;border-radius:18px;padding:16px;">
+            <b>Paid:</b> {{ paid_count }}
+        </div>
+        <div style="background:#fff;border:1px solid #eee;border-radius:18px;padding:16px;">
+            <b>Pending:</b> {{ pending_count }}
+        </div>
+    </div>
+
+    <h3 style="color:#8B0000;margin:10px 0 12px;">Registered Students & Payments</h3>
+
+    {% if students %}
+        <div style="overflow:auto;border-radius:16px;border:1px solid #eee;background:white;">
+            <table style="width:100%;border-collapse:collapse;">
+                <thead>
+                    <tr style="background:#fafafa;">
+                        <th style="text-align:left;padding:12px 14px;border-bottom:1px solid #eee;">Student</th>
+                        <th style="text-align:left;padding:12px 14px;border-bottom:1px solid #eee;">Course</th>
+                        <th style="text-align:left;padding:12px 14px;border-bottom:1px solid #eee;">Timetable</th>
+                        <th style="text-align:left;padding:12px 14px;border-bottom:1px solid #eee;">Payment</th>
+                        <th style="text-align:left;padding:12px 14px;border-bottom:1px solid #eee;">Payment ID</th>
+                        <th style="text-align:left;padding:12px 14px;border-bottom:1px solid #eee;">Booking Date</th>
+                        <th style="text-align:left;padding:12px 14px;border-bottom:1px solid #eee;">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for st in students %}
+                        <tr>
+                            <td style="padding:12px 14px;border-bottom:1px solid #f2f2f2;">
+                                {{ st.user.username }}
+                            </td>
+                            <td style="padding:12px 14px;border-bottom:1px solid #f2f2f2;">
+                                {% if st.selected_course %}{{ st.selected_course.name }}{% else %}-{% endif %}
+                            </td>
+                            <td style="padding:12px 14px;border-bottom:1px solid #f2f2f2;">
+                                {% if st.selected_timetable %}{{ st.selected_timetable.day }} - {{ st.selected_timetable.time }} ({{ st.selected_timetable.mode }}){% else %}-{% endif %}
+                            </td>
+                            <td style="padding:12px 14px;border-bottom:1px solid #f2f2f2;">
+                                {% if st.admission_fee_paid %}
+                                    <span style="color:green;font-weight:800;">Paid</span>
+                                {% else %}
+                                    <span style="color:#b00020;font-weight:800;">Not Paid</span>
+                                {% endif %}
+                            </td>
+                            <td style="padding:12px 14px;border-bottom:1px solid #f2f2f2;">
+                                {% if st.payment_id %}{{ st.payment_id }}{% else %}-{% endif %}
+                            </td>
+                            <td style="padding:12px 14px;border-bottom:1px solid #f2f2f2;">
+                                {% if st.booking %}{{ st.booking.booking_date }}{% else %}-{% endif %}
+                            </td>
+                            <td style="padding:12px 14px;border-bottom:1px solid #f2f2f2;">
+                                {% if st.admission_fee_paid %}
+                                    <form method="POST" style="display:inline;">
+                                        {% csrf_token %}
+                                        <input type="hidden" name="action" value="mark_pending">
+                                        <input type="hidden" name="profile_id" value="{{ st.id }}">
+                                        <button type="submit" style="padding:8px 12px;border:none;border-radius:12px;background:#eee;cursor:pointer;font-weight:700;">Mark Pending</button>
+                                    </form>
+                                {% else %}
+                                    <form method="POST" style="display:inline;">
+                                        {% csrf_token %}
+                                        <input type="hidden" name="action" value="mark_paid">
+                                        <input type="hidden" name="profile_id" value="{{ st.id }}">
+                                        <button type="submit" style="padding:8px 12px;border:none;border-radius:12px;background:#8B1E3F;color:white;cursor:pointer;font-weight:700;">Mark Paid</button>
+                                    </form>
+                                {% endif %}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% else %}
+        <p style="text-align:center;color:#555;">No registered students found.</p>
+    {% endif %}
+
+    <div style="margin-top:18px;color:#666;font-size:13px;">
+        Use the links in the sidebar to manage courses, timetables, instructors, gallery images, and registered students.
+    </div>
+</div>
+{% endblock %}
+

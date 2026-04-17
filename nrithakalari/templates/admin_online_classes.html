@@ -1,0 +1,76 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div style="max-width:1200px;margin:40px auto;padding:20px;">
+    <div style="display:flex;gap:12px;align-items:center;justify-content:space-between;flex-wrap:wrap;margin-bottom:16px;">
+        <h2 style="text-align:center;color:#8B0000;margin:0;">Online Classes (Admin)</h2>
+        <a href="{% url 'admin_online_class_add' %}" style="padding:10px 14px;border-radius:14px;background:#8B1E3F;color:white;font-weight:900;text-decoration:none;">
+            Add Online Class
+        </a>
+    </div>
+
+    <div style="overflow:auto;border-radius:16px;border:1px solid #eee;background:white;">
+        <table style="width:100%;border-collapse:collapse;">
+            <thead>
+                <tr style="background:#fafafa;">
+                    <th style="text-align:left;padding:12px 14px;border-bottom:1px solid #eee;">Title</th>
+                    <th style="text-align:left;padding:12px 14px;border-bottom:1px solid #eee;">Course</th>
+                    <th style="text-align:left;padding:12px 14px;border-bottom:1px solid #eee;">Scheduled At</th>
+                    <th style="text-align:left;padding:12px 14px;border-bottom:1px solid #eee;">Meeting</th>
+                    <th style="text-align:left;padding:12px 14px;border-bottom:1px solid #eee;">Active</th>
+                    <th style="text-align:left;padding:12px 14px;border-bottom:1px solid #eee;">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for c in classes %}
+                    <tr>
+                        <td style="padding:12px 14px;border-bottom:1px solid #f2f2f2;">
+                            <div style="font-weight:900;color:#333;margin-bottom:4px;">{{ c.title }}</div>
+                            {% if c.description %}
+                                <div style="font-size:13px;color:#666;max-width:520px;word-break:break-word;">{{ c.description }}</div>
+                            {% endif %}
+                        </td>
+                        <td style="padding:12px 14px;border-bottom:1px solid #f2f2f2;">
+                            {{ c.course.name }}
+                        </td>
+                        <td style="padding:12px 14px;border-bottom:1px solid #f2f2f2;">
+                            {{ c.scheduled_at }}
+                        </td>
+                        <td style="padding:12px 14px;border-bottom:1px solid #f2f2f2;">
+                            {% if c.meeting_url %}
+                                <a href="{{ c.meeting_url }}" target="_blank" rel="noopener" style="color:#8B1E3F;font-weight:900;text-decoration:none;">
+                                    Join Link
+                                </a>
+                            {% else %}
+                                -
+                            {% endif %}
+                        </td>
+                        <td style="padding:12px 14px;border-bottom:1px solid #f2f2f2;">
+                            {% if c.is_active %}
+                                <span style="color:green;font-weight:900;">Active</span>
+                            {% else %}
+                                <span style="color:#b00020;font-weight:900;">Inactive</span>
+                            {% endif %}
+                        </td>
+                        <td style="padding:12px 14px;border-bottom:1px solid #f2f2f2;white-space:nowrap;">
+                            <a href="{% url 'admin_online_class_edit' c.id %}" style="padding:8px 12px;border-radius:12px;background:#eee;color:#333;font-weight:900;text-decoration:none;display:inline-block;margin-right:8px;">
+                                Edit
+                            </a>
+                            <a href="{% url 'admin_online_class_delete' c.id %}" style="padding:8px 12px;border-radius:12px;background:#b00020;color:white;font-weight:900;text-decoration:none;display:inline-block;">
+                                Delete
+                            </a>
+                        </td>
+                    </tr>
+                {% empty %}
+                    <tr>
+                        <td colspan="6" style="padding:18px;color:#555;text-align:center;">
+                            No online classes found.
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}
+

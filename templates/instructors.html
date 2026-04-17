@@ -1,0 +1,80 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div style="max-width:1000px;margin:40px auto;padding:30px;">
+    {% if instructors %}
+        {% for ins in instructors %}
+            <div style="background:white;border-radius:25px;padding:40px;box-shadow:0 10px 40px rgba(0,0,0,0.1);margin-bottom:25px;">
+                <!-- Header -->
+                <div style="text-align:center;margin-bottom:30px;">
+                    <h1 style="margin-bottom:6px;">{{ ins.name }}</h1>
+                    <p style="color:#8B4513;font-size:18px;margin-bottom:6px;">
+                        {{ ins.specialization }}
+                    </p>
+                    {% if ins.image %}
+                        <div style="margin:0 auto 18px;max-width:220px;">
+                            <img
+                                src="{{ ins.image.url }}"
+                                alt="{{ ins.name }}"
+                                style="width:100%;height:auto;border-radius:16px;border:1px solid #eee;display:block;"
+                            />
+                        </div>
+                    {% endif %}
+                    {% if ins.experience %}
+                        <p><b>Experience:</b> {{ ins.experience }}</p>
+                    {% endif %}
+                </div>
+
+                <!-- About -->
+                {% if ins.about %}
+                    <div style="margin-bottom:25px;">
+                        <h3>✨ About</h3>
+                        <p>{{ ins.about }}</p>
+                    </div>
+                {% endif %}
+
+                <!-- Education -->
+                {% if ins.education_details %}
+                    <div style="margin-bottom:25px;">
+                        <h3>🎓 Education Details</h3>
+                        <p>{{ ins.education_details|linebreaksbr }}</p>
+                    </div>
+                {% endif %}
+
+                <!-- Performance -->
+                {% if ins.performance_details %}
+                    <div style="margin-bottom:25px;">
+                        <h3>🌍 Performance Details</h3>
+                        <p>{{ ins.performance_details }}</p>
+                    </div>
+                {% endif %}
+
+                <!-- Teaching -->
+                {% if ins.teaching_details %}
+                    <div style="margin-bottom:25px;">
+                        <h3>🏫 Teaching Details</h3>
+                        <p>{{ ins.teaching_details }}</p>
+                    </div>
+                {% endif %}
+
+                <!-- Contact -->
+                <div style="margin-top:30px;padding:20px;background:#f9f9f9;border-radius:15px;">
+                    <h3>📞 Contact</h3>
+                    {% if ins.contact_phone %}
+                        <p><b>Phone:</b> {{ ins.contact_phone }}</p>
+                    {% endif %}
+                    {% if ins.contact_email %}
+                        <p><b>Email:</b> {{ ins.contact_email }}</p>
+                    {% endif %}
+                    {% if ins.location %}
+                        <p><b>Location:</b> {{ ins.location }}</p>
+                    {% endif %}
+                </div>
+            </div>
+        {% endfor %}
+    {% else %}
+        <p style="text-align:center;color:#555;">No instructors added yet.</p>
+    {% endif %}
+</div>
+{% endblock %}
+

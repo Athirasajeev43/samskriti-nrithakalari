@@ -1,0 +1,246 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<style>
+    body { background: #f4f4f4; }
+
+    .form-container {
+        max-width: 1100px;
+        margin: 40px auto;
+        padding: 20px;
+    }
+
+    .form-title {
+        text-align: center;
+        color: #8B1E3F;
+        margin-bottom: 25px;
+        font-weight: 700;
+    }
+
+    .form-card {
+        background: #fff;
+        border-radius: 20px;
+        padding: 30px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.06);
+    }
+
+    .grid-2 {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
+    }
+
+    label {
+        display: block;
+        margin-bottom: 6px;
+        font-weight: 700;
+    }
+
+    input, select, textarea {
+        width: 100%;
+        padding: 12px;
+        border-radius: 10px;
+        border: 1px solid #ddd;
+        background: #fafafa;
+        transition: 0.3s;
+    }
+
+    input:focus, select:focus, textarea:focus {
+        outline: none;
+        border-color: #8B1E3F;
+        background: #fff;
+        box-shadow: 0 0 0 2px rgba(139,30,63,0.1);
+    }
+
+    textarea { min-height: 90px; }
+
+    .checkbox-field {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-top: 25px;
+    }
+
+    .actions {
+        display: flex;
+        gap: 15px;
+        margin-top: 25px;
+        flex-wrap: wrap;
+    }
+
+    .btn-save {
+        flex: 1;
+        padding: 14px;
+        border: none;
+        border-radius: 12px;
+        background: #8B1E3F;
+        color: white;
+        font-weight: 700;
+        cursor: pointer;
+    }
+
+    .btn-cancel {
+        flex: 1;
+        padding: 14px;
+        border-radius: 12px;
+        border: 1px solid #eee;
+        background: #f5f5f5;
+        text-align: center;
+        text-decoration: none;
+        color: #333;
+        font-weight: 700;
+    }
+
+    /* 🔥 Generate Button */
+    .generate-btn {
+        margin-top: 8px;
+        padding: 8px 12px;
+        border: none;
+        background: #2c7be5;
+        color: white;
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: 13px;
+    }
+
+    .generate-btn:hover {
+        background: #1a5fd0;
+    }
+</style>
+
+<div class="form-container">
+
+    <h2 class="form-title">{{ mode }}</h2>
+
+    <div class="form-card">
+        <form method="POST">
+            {% csrf_token %}
+
+            <div class="grid-2">
+
+                <div>
+                    <label>Course</label>
+                    {{ form.course }}
+                </div>
+
+                <div>
+                    <label>Schedule (Day + Time)</label>
+                    {{ form.timetable_slot }}
+                </div>
+
+                <div>
+                    <label>Schedule Date</label>
+                    {{ form.class_date }}
+                </div>
+
+                <!-- <div class="checkbox-field">
+                    {{ form.is_active }}
+                    <label>Active</label>
+                </div> -->
+
+            </div>
+
+            <div style="margin-top:20px;">
+                <label>Class Title</label>
+                {{ form.title }}
+            </div>
+
+            <div style="margin-top:20px;">
+                <label>Description</label>
+                {{ form.description }}
+            </div>
+
+            <!-- 🔥 MEETING URL WITH GENERATE BUTTON -->
+            <div style="margin-top:20px;">
+                <label>Meeting URL</label>
+                {{ form.meeting_url }}
+
+                <button type="button" class="generate-btn" onclick="generateMeetLink()">
+                    Generate Google Meet Link
+                </button>
+            </div>
+
+            <div style="margin-top:20px;">
+                <label>Reminder Offset (minutes)</label>
+                {{ form.reminder_offset_minutes }}
+            </div>
+
+            <div class="actions">
+                <button type="submit" class="btn-save">Save</button>
+
+                <a href="{% url 'admin_online_classes' %}" class="btn-cancel">
+                    Cancel
+                </a>
+            </div>
+
+        </form>
+    </div>
+
+</div>
+
+<script>
+/* 🔥 AUTO GENERATE GOOGLE MEET LINK (FAKE DEMO) */
+function generateMeetLink() {
+    let chars = "abcdefghijklmnopqrstuvwxyz";
+    function part(len) {
+        let str = "";
+        for (let i = 0; i < len; i++) {
+            str += chars.charAt(Math.floor(Math.random() * chars.length));
+        }
+        return str;
+    }
+
+    // Format like real Google Meet: xxx-xxxx-xxx
+    let meetCode = part(3) + "-" + part(4) + "-" + part(3);
+
+    let link = "https://meet.google.com/" + meetCode;
+
+    document.getElementById("id_meeting_url").value = link;
+}
+</script>
+
+
+<script>
+/* 🔥 FILTER TIMETABLE BASED ON COURSE */
+(function(){
+    var courseSelect = document.getElementById("id_course");
+    var slotSelect = document.getElementById("id_timetable_slot");
+    if (!courseSelect || !slotSelect) return;
+
+    var slotToCourse = {};
+    {% for s in timetable_slots_for_js %}
+        slotToCourse["{{ s.id }}"] = "{{ s.course_id }}";
+    {% endfor %}
+
+    function applyFilter(){
+        var selectedCourseId = courseSelect.value;
+
+        for (var i = 0; i < slotSelect.options.length; i++){
+            var opt = slotSelect.options[i];
+            var slotId = opt.value;
+
+            if (!slotId) {
+                opt.disabled = false;
+                opt.hidden = false;
+                continue;
+            }
+
+            var optCourseId = slotToCourse[slotId];
+
+            if (!selectedCourseId || optCourseId != selectedCourseId){
+                opt.disabled = true;
+                opt.hidden = true;
+            } else {
+                opt.disabled = false;
+                opt.hidden = false;
+            }
+        }
+    }
+
+    courseSelect.addEventListener("change", applyFilter);
+    applyFilter();
+})();
+</script>
+
+{% endblock %}

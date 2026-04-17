@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div style="max-width:1200px;margin:40px auto;padding:20px;">
+    <h2 style="text-align:center;color:#8B0000;margin-bottom:20px;">Manage Courses</h2>
+
+    <div style="text-align:right;margin-bottom:15px;">
+        <a href="{% url 'admin_course_add' %}" style="padding:10px 14px;border-radius:14px;background:#8B1E3F;color:white;text-decoration:none;font-weight:800;">
+            Add Course
+        </a>
+    </div>
+
+    {% if courses %}
+        <div style="overflow:auto;border-radius:16px;border:1px solid #eee;background:white;">
+            <table style="width:100%;border-collapse:collapse;">
+                <thead>
+                    <tr style="background:#fafafa;">
+                        <th style="text-align:left;padding:12px 14px;border-bottom:1px solid #eee;">Image</th>
+                        <th style="text-align:left;padding:12px 14px;border-bottom:1px solid #eee;">Name</th>
+                        <th style="text-align:left;padding:12px 14px;border-bottom:1px solid #eee;">Duration</th>
+                        <th style="text-align:left;padding:12px 14px;border-bottom:1px solid #eee;">Fee</th>
+                        <th style="text-align:left;padding:12px 14px;border-bottom:1px solid #eee;">Active</th>
+                        <th style="text-align:left;padding:12px 14px;border-bottom:1px solid #eee;">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for c in courses %}
+                        <tr>
+                            <td style="padding:12px 14px;border-bottom:1px solid #f2f2f2;">
+                                {% if c.image %}
+                                    <img src="{{ c.image.url }}" alt="{{ c.name }}" style="width:60px;height:40px;object-fit:cover;border-radius:8px;border:1px solid #eee;" />
+                                {% else %}
+                                    -
+                                {% endif %}
+                            </td>
+                            <td style="padding:12px 14px;border-bottom:1px solid #f2f2f2;">{{ c.name }}</td>
+                            <td style="padding:12px 14px;border-bottom:1px solid #f2f2f2;">{{ c.duration|default:"-" }}</td>
+                            <td style="padding:12px 14px;border-bottom:1px solid #f2f2f2;">₹{{ c.fee }}</td>
+                            <td style="padding:12px 14px;border-bottom:1px solid #f2f2f2;">
+                                {% if c.is_active %}
+                                    <span style="color:green;font-weight:800;">Yes</span>
+                                {% else %}
+                                    <span style="color:#b00020;font-weight:800;">No</span>
+                                {% endif %}
+                            </td>
+                            <td style="padding:12px 14px;border-bottom:1px solid #f2f2f2;">
+                                <a href="{% url 'admin_course_edit' c.id %}" style="padding:8px 10px;border-radius:12px;border:1px solid #eee;background:#fafafa;text-decoration:none;font-weight:800;color:#333;">Edit</a>
+                                <a href="{% url 'admin_course_delete' c.id %}" style="margin-left:8px;padding:8px 10px;border-radius:12px;border:1px solid #eee;background:#fff0f0;text-decoration:none;font-weight:800;color:#b00020;">Delete</a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% else %}
+        <p style="text-align:center;color:#555;">No courses added yet.</p>
+    {% endif %}
+</div>
+{% endblock %}
+

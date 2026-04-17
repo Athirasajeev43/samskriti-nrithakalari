@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div style="max-width:1200px;margin:40px auto;padding:30px;">
+    <h2 style="text-align:center;color:#8B0000;margin-bottom:25px;">Course Details</h2>
+
+    {% if courses %}
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:18px;">
+            {% for course in courses %}
+                <div style="background:white;border-radius:25px;padding:20px;box-shadow:0 10px 40px rgba(0,0,0,0.08);border:1px solid #f3f3f3;">
+                    <h3 style="margin-bottom:10px;">{{ course.name }}</h3>
+
+                    {% if course.image %}
+                        <div style="text-align:center;margin-bottom:14px;">
+                            <img
+                                src="{{ course.image.url }}"
+                                alt="{{ course.name }}"
+                                style="width:100%;max-width:360px;height:auto;border-radius:18px;border:1px solid #eee;"
+                            />
+                        </div>
+                    {% endif %}
+
+                    {% if course.description %}
+                        <p style="color:#555;line-height:1.7;margin-bottom:14px;">{{ course.description }}</p>
+                    {% endif %}
+
+                    <div style="margin-bottom:10px;">
+                        <b>Duration:</b> {{ course.duration|default:"-" }}
+                    </div>
+                    <div style="margin-bottom:10px;">
+                        <b>Fee:</b> ₹{{ course.fee }}
+                    </div>
+
+                    {% if course.is_active %}
+                        <div style="margin-top:12px;color:green;font-weight:800;">Active</div>
+                    {% else %}
+                        <div style="margin-top:12px;color:#b00020;font-weight:800;">Inactive</div>
+                    {% endif %}
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p style="text-align:center;color:#555;">No active courses found.</p>
+    {% endif %}
+</div>
+{% endblock %}
+

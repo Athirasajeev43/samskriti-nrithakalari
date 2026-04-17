@@ -1,0 +1,71 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div style="max-width:1100px;margin:40px auto;padding:30px;">
+    <h2 style="text-align:center;color:#8B0000;margin-bottom:25px;">Timetable (All Courses)</h2>
+
+    <div style="margin:0 auto 25px;padding:0;">
+    <h3 style="text-align:center;color:#8B0000;margin-bottom:15px;">Upcoming Programs</h3>
+    {% if upcoming_programs %}
+        <div style="overflow:auto;border-radius:16px;border:1px solid #eee;background:white;">
+            <table style="width:100%;border-collapse:collapse;">
+                <thead>
+                    <tr style="background:#fafafa;">
+                        <th style="text-align:left;padding:12px 14px;border-bottom:1px solid #eee;">Program</th>
+                        <th style="text-align:left;padding:12px 14px;border-bottom:1px solid #eee;">Date/Time</th>
+                        <th style="text-align:left;padding:12px 14px;border-bottom:1px solid #eee;">Course</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for p in upcoming_programs %}
+                        <tr>
+                            <td style="padding:12px 14px;border-bottom:1px solid #f2f2f2;">
+                                {{ p.title }}
+                            </td>
+                            <td style="padding:12px 14px;border-bottom:1px solid #f2f2f2;">
+                                {{ p.starts_at }}
+                            </td>
+                            <td style="padding:12px 14px;border-bottom:1px solid #f2f2f2;">
+                                {% if p.course %}{{ p.course.name }}{% else %}-{% endif %}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% else %}
+        <p style="text-align:center;color:#555;">No upcoming programs found.</p>
+    {% endif %}
+    </div>
+
+    {% if timetable_entries %}
+        <div style="overflow:auto;border-radius:16px;border:1px solid #eee;background:white;">
+            <table style="width:100%;border-collapse:collapse;">
+                <thead>
+                    <tr style="background:#fafafa;">
+                        <th style="text-align:left;padding:12px 14px;border-bottom:1px solid #eee;">Course</th>
+                        <th style="text-align:left;padding:12px 14px;border-bottom:1px solid #eee;">Day</th>
+                        <th style="text-align:left;padding:12px 14px;border-bottom:1px solid #eee;">Time</th>
+                        <th style="text-align:left;padding:12px 14px;border-bottom:1px solid #eee;">Mode</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for entry in timetable_entries %}
+                        <tr>
+                            <td style="padding:12px 14px;border-bottom:1px solid #f2f2f2;">
+                                {{ entry.course.name }}
+                            </td>
+                            <td style="padding:12px 14px;border-bottom:1px solid #f2f2f2;">{{ entry.day }}</td>
+                            <td style="padding:12px 14px;border-bottom:1px solid #f2f2f2;">{{ entry.time }}</td>
+                            <td style="padding:12px 14px;border-bottom:1px solid #f2f2f2;">{{ entry.mode }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% else %}
+        <p style="text-align:center;color:#555;">No timetable entries found.</p>
+    {% endif %}
+</div>
+{% endblock %}
+

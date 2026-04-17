@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div style="max-width:1200px;margin:40px auto;padding:20px;">
+    <h2 style="text-align:center;color:#8B0000;margin-bottom:20px;">Manage Instructors</h2>
+
+    <div style="text-align:right;margin-bottom:15px;">
+        <a href="{% url 'admin_instructor_add' %}" style="padding:10px 14px;border-radius:14px;background:#8B1E3F;color:white;text-decoration:none;font-weight:800;">
+            Add Instructor
+        </a>
+    </div>
+
+    {% if instructors %}
+        <div style="overflow:auto;border-radius:16px;border:1px solid #eee;background:white;">
+            <table style="width:100%;border-collapse:collapse;">
+                <thead>
+                    <tr style="background:#fafafa;">
+                        <th style="text-align:left;padding:12px 14px;border-bottom:1px solid #eee;">Image</th>
+                        <th style="text-align:left;padding:12px 14px;border-bottom:1px solid #eee;">Name</th>
+                        <th style="text-align:left;padding:12px 14px;border-bottom:1px solid #eee;">Specialization</th>
+                        <th style="text-align:left;padding:12px 14px;border-bottom:1px solid #eee;">Experience</th>
+                        <th style="text-align:left;padding:12px 14px;border-bottom:1px solid #eee;">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for ins in instructors %}
+                        <tr>
+                            <td style="padding:12px 14px;border-bottom:1px solid #f2f2f2;">
+                                {% if ins.image %}
+                                    <img src="{{ ins.image.url }}" alt="{{ ins.name }}" style="width:60px;height:40px;object-fit:cover;border-radius:8px;border:1px solid #eee;" />
+                                {% else %}
+                                    -
+                                {% endif %}
+                            </td>
+                            <td style="padding:12px 14px;border-bottom:1px solid #f2f2f2;">{{ ins.name }}</td>
+                            <td style="padding:12px 14px;border-bottom:1px solid #f2f2f2;">{{ ins.specialization }}</td>
+                            <td style="padding:12px 14px;border-bottom:1px solid #f2f2f2;">{{ ins.experience }}</td>
+                            <td style="padding:12px 14px;border-bottom:1px solid #f2f2f2;">
+                                <a href="{% url 'admin_instructor_edit' ins.id %}" style="padding:8px 10px;border-radius:12px;border:1px solid #eee;background:#fafafa;text-decoration:none;font-weight:800;color:#333;">Edit</a>
+                                <a href="{% url 'admin_instructor_delete' ins.id %}" style="margin-left:8px;padding:8px 10px;border-radius:12px;border:1px solid #eee;background:#fff0f0;text-decoration:none;font-weight:800;color:#b00020;">Delete</a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% else %}
+        <p style="text-align:center;color:#555;">No instructors added yet.</p>
+    {% endif %}
+</div>
+{% endblock %}
+

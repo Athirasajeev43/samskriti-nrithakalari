@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="timetable-page">
+
+    <h2 class="timetable-title">Timetable (All Courses)</h2>
+
+    <!-- 🔲 PROGRAM BOX -->
+    <div class="program-box">
+        <h3>Upcoming Programs</h3>
+
+        {% if upcoming_programs %}
+            {% for p in upcoming_programs %}
+                <div class="program-item">
+                    <b>{{ p.title }}</b><br>
+                    <span>{{ p.starts_at }}</span><br>
+                    <small>
+                        {% if p.course %}{{ p.course.name }}{% else %}-{% endif %}
+                    </small>
+                </div>
+            {% endfor %}
+        {% else %}
+            <p class="no-program">No upcoming programs found.</p>
+        {% endif %}
+    </div>
+
+    <!-- 📋 TIMETABLE -->
+    <div class="table-box">
+        <table class="main-table">
+            <thead>
+                <tr>
+                    <th>Course</th>
+                    <th>Day</th>
+                    <th>Time</th>
+                    <th>Mode</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for entry in timetable_entries %}
+                <tr>
+                    <td>{{ entry.course.name }}</td>
+                    <td>{{ entry.day }}</td>
+                    <td>{{ entry.time }}</td>
+                    <td>{{ entry.mode }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+</div>
+{% endblock %}

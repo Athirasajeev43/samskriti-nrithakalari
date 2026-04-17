@@ -1,0 +1,49 @@
+{% block content %}
+<div style="max-width:1200px;margin:40px auto;padding:20px;">
+    <h2 style="text-align:center;color:#8B0000;margin-bottom:20px;">Manage Gallery</h2>
+
+    <div style="text-align:right;margin-bottom:15px;">
+        <a href="{% url 'admin_gallery_image_add' %}" 
+           style="padding:10px 14px;border-radius:14px;background:#8B1E3F;color:white;text-decoration:none;font-weight:800;">
+            Upload Image
+        </a>
+    </div>
+
+    {% if images %}
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:18px;">
+            {% for img in images %}
+                <div style="background:white;border:1px solid #eee;border-radius:20px;overflow:hidden;box-shadow:0 6px 20px rgba(0,0,0,0.04);">
+                    
+                    <!-- Image wrapper without fixed height -->
+                    <div style="background:#fafafa;">
+                        {% if img.image %}
+                            <img src="{{ img.image.url }}" alt="Gallery Image" style="width:100%;height:auto;display:block;" />
+                        {% else %}
+                            <div style="width:100%;height:150px;display:flex;align-items:center;justify-content:center;color:#777;">
+                                No Image
+                            </div>
+                        {% endif %}
+                    </div>
+
+                    <div style="padding:14px;">
+                        <div style="color:#777;font-size:12px;margin-bottom:12px;">{{ img.uploaded_at }}</div>
+                        <div style="display:flex;gap:10px;">
+                            <a href="{% url 'admin_gallery_image_edit' img.id %}" 
+                               style="flex:1;padding:8px 10px;border-radius:12px;border:1px solid #eee;background:#fafafa;text-decoration:none;font-weight:800;color:#333;text-align:center;">
+                               Edit
+                            </a>
+                            <a href="{% url 'admin_gallery_image_delete' img.id %}" 
+                               style="flex:1;padding:8px 10px;border-radius:12px;border:1px solid #eee;background:#fff0f0;text-decoration:none;font-weight:800;color:#b00020;text-align:center;">
+                               Delete
+                            </a>
+                        </div>
+                    </div>
+
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p style="text-align:center;color:#555;">No gallery images found.</p>
+    {% endif %}
+</div>
+{% endblock %}

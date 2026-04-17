@@ -1,0 +1,565 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<style>
+    /* Cultural Dance Theme Styling */
+    :root {
+        --saffron: #FF9933;      /* Sacred color */
+        --maroon: #800000;        /* Traditional dance costume */
+        --gold: #DAA520;          /* Temple jewelry */
+        --ivory: #FFFFF0;         /* Classical attire */
+        --sand: #C19A6B;          /* Temple stone */
+        --gradient-dance: linear-gradient(135deg, #FF9933 0%, #800000 50%, #DAA520 100%);
+    }
+
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    body {
+        background: linear-gradient(135deg, #fdf5e6 0%, #fff0db 100%);
+        font-family: 'Playfair Display', 'Georgia', serif;
+        min-height: 100vh;
+        position: relative;
+        overflow-x: hidden;
+    }
+
+    /* Traditional Dance Motifs Background */
+    body::before {
+        content: '';
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-image: 
+            radial-gradient(circle at 10% 20%, rgba(218, 165, 32, 0.03) 0%, transparent 20%),
+            radial-gradient(circle at 90% 70%, rgba(128, 0, 0, 0.03) 0%, transparent 30%),
+            repeating-linear-gradient(45deg, rgba(255, 153, 51, 0.02) 0px, rgba(255, 153, 51, 0.02) 2px, transparent 2px, transparent 6px);
+        pointer-events: none;
+        z-index: 0;
+    }
+
+    .dashboard {
+        max-width: 1200px;
+        margin: 60px auto;
+        padding: 60px 40px;
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(10px);
+        border-radius: 60px 60px 60px 60px;
+        box-shadow: 0 30px 60px rgba(128, 0, 0, 0.15);
+        position: relative;
+        z-index: 1;
+        animation: templeEntrance 1.2s ease-out;
+        border: 2px solid rgba(218, 165, 32, 0.2);
+    }
+
+    /* Temple Arch Effect */
+    .dashboard::before {
+        content: '';
+        position: absolute;
+        top: -10px;
+        left: 10%;
+        right: 10%;
+        height: 20px;
+        background: linear-gradient(90deg, transparent, var(--gold), var(--maroon), var(--gold), transparent);
+        border-radius: 10px 10px 0 0;
+        opacity: 0.5;
+    }
+
+    .dashboard::after {
+        content: '🕉️';
+        position: absolute;
+        top: 20px;
+        right: 40px;
+        font-size: 48px;
+        opacity: 0.1;
+        transform: rotate(15deg);
+        animation: gentleFloat 6s ease-in-out infinite;
+    }
+
+    @keyframes templeEntrance {
+        0% {
+            opacity: 0;
+            transform: translateY(30px) scale(0.95);
+        }
+        100% {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+    }
+
+    @keyframes gentleFloat {
+        0%, 100% { transform: rotate(15deg) translateY(0); }
+        50% { transform: rotate(20deg) translateY(-10px); }
+    }
+
+    /* Decorative Dance Elements */
+    .dashboard .decor-left {
+        position: absolute;
+        left: 20px;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 60px;
+        height: 200px;
+        background: linear-gradient(180deg, transparent, var(--gold), var(--maroon), transparent);
+        opacity: 0.2;
+        border-radius: 30px;
+    }
+
+    .dashboard .decor-right {
+        position: absolute;
+        right: 20px;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 60px;
+        height: 200px;
+        background: linear-gradient(180deg, transparent, var(--saffron), var(--maroon), transparent);
+        opacity: 0.2;
+        border-radius: 30px;
+    }
+
+    /* Main Heading - Traditional Style */
+    .dashboard h1 {
+        font-size: 56px;
+        font-weight: 700;
+        color: var(--maroon);
+        text-align: center;
+        margin-bottom: 30px;
+        position: relative;
+        padding-bottom: 25px;
+        font-family: 'Playfair Display', serif;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        letter-spacing: -0.5px;
+        line-height: 1.3;
+    }
+
+    .dashboard h1::before {
+        content: '🎭';
+        font-size: 48px;
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+        top: -60px;
+        opacity: 0.3;
+        animation: bharatanatyam 4s ease-in-out infinite;
+    }
+
+    .dashboard h1::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 150px;
+        height: 4px;
+        background: linear-gradient(90deg, var(--saffron), var(--maroon), var(--gold), var(--maroon), var(--saffron));
+        border-radius: 4px;
+        animation: expandWidth 1.5s ease forwards;
+    }
+
+    @keyframes bharatanatyam {
+        0%, 100% { transform: translateX(-50%) rotate(0deg); }
+        25% { transform: translateX(-50%) rotate(-10deg); }
+        75% { transform: translateX(-50%) rotate(10deg); }
+    }
+
+    @keyframes expandWidth {
+        from { width: 0; opacity: 0; }
+        to { width: 150px; opacity: 1; }
+    }
+
+    /* Temple Bell Decoration */
+    .temple-bells {
+        display: flex;
+        justify-content: center;
+        gap: 20px;
+        margin: 20px 0;
+    }
+
+    .temple-bells span {
+        font-size: 24px;
+        animation: bellRing 2s ease-in-out infinite;
+        animation-delay: calc(var(--i) * 0.3s);
+    }
+
+    @keyframes bellRing {
+        0%, 100% { transform: rotate(0deg); }
+        25% { transform: rotate(15deg); }
+        75% { transform: rotate(-15deg); }
+    }
+
+    /* Description Paragraphs */
+    .dashboard p {
+        font-size: 22px;
+        line-height: 1.8;
+        color: #4a4a4a;
+        text-align: center;
+        margin: 20px auto;
+        max-width: 800px;
+        position: relative;
+        padding: 10px 30px;
+        font-family: 'Cormorant Garamond', 'Georgia', serif;
+        font-weight: 500;
+    }
+
+    .dashboard p:first-of-type {
+        font-size: 28px;
+        color: var(--maroon);
+        font-weight: 600;
+        background: linear-gradient(135deg, rgba(255, 153, 51, 0.1), rgba(128, 0, 0, 0.1));
+        border-radius: 50px;
+        margin-top: 30px;
+        border-left: 4px solid var(--gold);
+        border-right: 4px solid var(--saffron);
+    }
+
+    .dashboard p:last-of-type {
+        font-size: 24px;
+        color: var(--saffron);
+        font-style: italic;
+        margin-bottom: 40px;
+        position: relative;
+    }
+
+    .dashboard p:last-of-type::before,
+    .dashboard p:last-of-type::after {
+        content: '✨';
+        font-size: 20px;
+        position: absolute;
+        opacity: 0.6;
+    }
+
+    .dashboard p:last-of-type::before {
+        left: 20%;
+        top: -10px;
+    }
+
+    .dashboard p:last-of-type::after {
+        right: 20%;
+        bottom: -10px;
+    }
+
+    /* Button Styling - Traditional Temple Gopuram Style */
+    .btn {
+        display: inline-block;
+        padding: 20px 50px;
+        background: linear-gradient(135deg, var(--maroon) 0%, var(--saffron) 50%, var(--gold) 100%);
+        color: var(--ivory);
+        text-decoration: none;
+        border-radius: 40px 40px 20px 20px;
+        font-size: 24px;
+        font-weight: 700;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        border: none;
+        cursor: pointer;
+        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        box-shadow: 0 15px 30px rgba(128, 0, 0, 0.3);
+        position: relative;
+        overflow: hidden;
+        margin: 30px auto;
+        display: table;
+        font-family: 'Playfair Display', serif;
+        border-bottom: 4px solid var(--gold);
+    }
+
+    /* Temple Gopuram Effect */
+    .btn::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+        transition: left 0.6s ease;
+    }
+
+    .btn::after {
+        content: '🕉️';
+        position: absolute;
+        right: 20px;
+        top: 50%;
+        transform: translateY(-50%);
+        font-size: 20px;
+        opacity: 0;
+        transition: all 0.4s ease;
+    }
+
+    .btn:hover {
+        transform: translateY(-8px) scale(1.02);
+        box-shadow: 0 25px 40px rgba(128, 0, 0, 0.4);
+        background: linear-gradient(135deg, var(--gold) 0%, var(--maroon) 50%, var(--saffron) 100%);
+        padding-right: 70px;
+        color: white;
+    }
+
+    .btn:hover::before {
+        left: 100%;
+    }
+
+    .btn:hover::after {
+        opacity: 1;
+        right: 30px;
+        animation: omGlow 1s ease infinite;
+    }
+
+    @keyframes omGlow {
+        0%, 100% { transform: translateY(-50%) scale(1); }
+        50% { transform: translateY(-50%) scale(1.2); }
+    }
+
+    .btn:active {
+        transform: translateY(-3px) scale(0.98);
+        box-shadow: 0 10px 20px rgba(128, 0, 0, 0.3);
+    }
+
+    /* Kolam (Rangoli) Design */
+    .kolam {
+        display: flex;
+        justify-content: center;
+        margin-top: 40px;
+        gap: 10px;
+    }
+
+    .kolam-dot {
+        width: 12px;
+        height: 12px;
+        background: var(--gold);
+        border-radius: 50%;
+        opacity: 0.3;
+        animation: kolamPulse 2s ease-in-out infinite;
+    }
+
+    .kolam-dot:nth-child(2) { animation-delay: 0.2s; background: var(--maroon); }
+    .kolam-dot:nth-child(3) { animation-delay: 0.4s; background: var(--saffron); }
+    .kolam-dot:nth-child(4) { animation-delay: 0.6s; background: var(--gold); }
+    .kolam-dot:nth-child(5) { animation-delay: 0.8s; background: var(--maroon); }
+    .kolam-dot:nth-child(6) { animation-delay: 1s; background: var(--saffron); }
+    .kolam-dot:nth-child(7) { animation-delay: 1.2s; background: var(--gold); }
+
+    @keyframes kolamPulse {
+        0%, 100% { transform: scale(1); opacity: 0.3; }
+        50% { transform: scale(1.5); opacity: 0.6; }
+    }
+
+    /* Responsive Design */
+    @media (max-width: 1024px) {
+        .dashboard {
+            margin: 40px 30px;
+            padding: 50px 30px;
+        }
+
+        .dashboard h1 {
+            font-size: 48px;
+        }
+    }
+
+    @media (max-width: 768px) {
+        .dashboard {
+            margin: 30px 20px;
+            padding: 40px 20px;
+            border-radius: 40px;
+        }
+
+        .dashboard h1 {
+            font-size: 40px;
+        }
+
+        .dashboard h1::before {
+            font-size: 36px;
+            top: -50px;
+        }
+
+        .dashboard p:first-of-type {
+            font-size: 24px;
+        }
+
+        .dashboard p:last-of-type {
+            font-size: 20px;
+        }
+
+        .btn {
+            padding: 16px 40px;
+            font-size: 20px;
+        }
+
+        .dashboard::after {
+            font-size: 36px;
+            right: 20px;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .dashboard {
+            margin: 20px 15px;
+            padding: 30px 15px;
+        }
+
+        .dashboard h1 {
+            font-size: 32px;
+        }
+
+        .dashboard h1::before {
+            font-size: 30px;
+            top: -40px;
+        }
+
+        .dashboard p:first-of-type {
+            font-size: 20px;
+            padding: 15px;
+        }
+
+        .dashboard p:last-of-type {
+            font-size: 18px;
+        }
+
+        .btn {
+            padding: 14px 30px;
+            font-size: 18px;
+            width: 100%;
+            text-align: center;
+        }
+
+        .btn::after {
+            display: none;
+        }
+    }
+
+    /* Print Styles */
+    @media print {
+        .dashboard {
+            box-shadow: none;
+            border: 2px solid var(--gold);
+        }
+
+        .btn {
+            border: 2px solid var(--maroon);
+            color: var(--maroon);
+            background: white;
+        }
+    }
+
+    /* Custom Selection Color */
+    ::selection {
+        background: var(--gold);
+        color: var(--maroon);
+    }
+
+    /* Add Dancing Silhouette Animation */
+    .dance-silhouette {
+        position: absolute;
+        bottom: 20px;
+        right: 20px;
+        font-size: 80px;
+        opacity: 0.05;
+        animation: danceMove 8s ease-in-out infinite;
+        pointer-events: none;
+    }
+
+    @keyframes danceMove {
+        0%, 100% { transform: translateX(0) rotate(0deg); }
+        25% { transform: translateX(-10px) rotate(-5deg); }
+        75% { transform: translateX(10px) rotate(5deg); }
+    }
+</style>
+
+<!-- Decorative Dance Silhouette -->
+<div class="dance-silhouette">💃</div>
+
+<div class="dashboard">
+    <!-- Traditional Temple Bells -->
+    <div class="temple-bells">
+        <span style="--i:1">🔔</span>
+        <span style="--i:2">🔔</span>
+        <span style="--i:3">🔔</span>
+    </div>
+
+    <h1>Join Samskriti Nrithakalari</h1>
+    
+    <p>Begin your journey into the world of classical dance.</p>
+    <p>Select your preferred course and learning mode.</p>
+
+    {% if profile.selected_course %}
+        <div style="max-width:900px;margin:26px auto 22px;background:rgba(255,255,255,0.96);border:1px solid #eee;border-radius:22px;padding:18px;">
+            <h3 style="margin-bottom:10px;color:var(--maroon);text-align:center;">
+                Your Current Selection
+            </h3>
+
+            <div style="display:flex;gap:18px;align-items:flex-start;flex-wrap:wrap;">
+                <div style="flex:0 0 220px;">
+                    {% if profile.selected_course.image %}
+                        <div style="height:140px;border:1px solid #eee;border-radius:18px;overflow:hidden;background:#fafafa;">
+                            <img
+                                src="{{ profile.selected_course.image.url }}"
+                                alt="{{ profile.selected_course.name }}"
+                                style="width:100%;height:140px;object-fit:cover;"
+                            />
+                        </div>
+                    {% else %}
+                        <div style="height:140px;border:1px dashed #ddd;border-radius:18px;display:flex;align-items:center;justify-content:center;color:#777;font-weight:700;">
+                            No Image
+                        </div>
+                    {% endif %}
+                </div>
+
+                <div style="flex:1;min-width:260px;">
+                    <div style="font-weight:900;color:#333;margin-bottom:6px;">
+                        {{ profile.selected_course.name }}
+                    </div>
+                    <div style="color:#555;margin-bottom:8px;">
+                        {% if profile.selected_course.duration %}Duration: <b>{{ profile.selected_course.duration }}</b> • {% endif %}
+                        Fee: <b>₹{{ profile.selected_course.fee }}</b>
+                    </div>
+
+                    <div style="color:#555;margin-bottom:8px;">
+                        <b>Timetable:</b>
+                        {% if profile.selected_timetable %}
+                            {{ profile.selected_timetable.day }} - {{ profile.selected_timetable.time }} ({{ profile.selected_timetable.mode }})
+                        {% else %}
+                            Not selected yet
+                        {% endif %}
+                    </div>
+
+                    <div style="font-weight:900;">
+                        Admission Fee:
+                        {% if profile.admission_fee_paid %}
+                            <span style="color:green;">Paid</span>
+                        {% else %}
+                            <span style="color:#b00020;">Not Paid</span>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+ 
+    <a href="{% url 'course_selection' %}" class="btn">
+        {% if profile.admission_fee_paid %}
+            Change / Select Next Course
+        {% else %}
+            Start Admission
+        {% endif %}
+    </a>
+
+    <!-- Traditional Kolam Design -->
+    <div class="kolam">
+        <div class="kolam-dot"></div>
+        <div class="kolam-dot"></div>
+        <div class="kolam-dot"></div>
+        <div class="kolam-dot"></div>
+        <div class="kolam-dot"></div>
+        <div class="kolam-dot"></div>
+        <div class="kolam-dot"></div>
+    </div>
+</div>
+
+<!-- Sanskrit Quote -->
+<div style="text-align: center; margin: 30px; color: var(--maroon); opacity: 0.6; font-family: 'Cormorant Garamond', serif;">
+    <p>नृत्यं भगवान् नटराजः - "Dance is divine, Nataraja is its lord"</p>
+</div>
+
+{% endblock %}

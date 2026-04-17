@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div style="max-width:1200px;margin:40px auto;padding:20px;">
+    <h2 style="text-align:center;color:#8B0000;margin-bottom:20px;">Manage Programs</h2>
+
+    <div style="text-align:right;margin-bottom:15px;">
+        <a href="{% url 'admin_program_add' %}" style="padding:10px 14px;border-radius:14px;background:#8B1E3F;color:white;text-decoration:none;font-weight:800;">
+            Add Program
+        </a>
+    </div>
+
+    {% if programs %}
+        <div style="overflow:auto;border-radius:16px;border:1px solid #eee;background:white;">
+            <table style="width:100%;border-collapse:collapse;">
+                <thead>
+                    <tr style="background:#fafafa;">
+                        <th style="text-align:left;padding:12px 14px;border-bottom:1px solid #eee;">Title</th>
+                        <th style="text-align:left;padding:12px 14px;border-bottom:1px solid #eee;">Course</th>
+                        <th style="text-align:left;padding:12px 14px;border-bottom:1px solid #eee;">Starts At</th>
+                        <th style="text-align:left;padding:12px 14px;border-bottom:1px solid #eee;">Description</th>
+                        <th style="text-align:left;padding:12px 14px;border-bottom:1px solid #eee;">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for p in programs %}
+                        <tr>
+                            <td style="padding:12px 14px;border-bottom:1px solid #f2f2f2;">
+                                {{ p.title }}
+                            </td>
+                            <td style="padding:12px 14px;border-bottom:1px solid #f2f2f2;">
+                                {% if p.course %}
+                                    {{ p.course.name }}
+                                {% else %}
+                                    All Courses
+                                {% endif %}
+                            </td>
+                            <td style="padding:12px 14px;border-bottom:1px solid #f2f2f2;">{{ p.starts_at }}</td>
+                            <td style="padding:12px 14px;border-bottom:1px solid #f2f2f2;max-width:520px;word-break:break-word;">
+                                {% if p.description %}{{ p.description }}{% else %}-{% endif %}
+                            </td>
+                            <td style="padding:12px 14px;border-bottom:1px solid #f2f2f2;white-space:nowrap;">
+                                <a href="{% url 'admin_program_edit' p.id %}" style="padding:8px 10px;border-radius:12px;border:1px solid #eee;background:#fafafa;text-decoration:none;font-weight:800;color:#333;">
+                                    Edit
+                                </a>
+                                <a href="{% url 'admin_program_delete' p.id %}" style="margin-left:8px;padding:8px 10px;border-radius:12px;border:1px solid #eee;background:#fff0f0;text-decoration:none;font-weight:800;color:#b00020;">
+                                    Delete
+                                </a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% else %}
+        <p style="text-align:center;color:#555;">No programs added yet.</p>
+    {% endif %}
+</div>
+{% endblock %}
+

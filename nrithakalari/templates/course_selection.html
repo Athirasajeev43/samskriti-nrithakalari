@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div style="max-width:1100px;margin:40px auto;padding:30px;">
+    <h2 style="text-align:center;color:#8B0000;margin-bottom:25px;">Course Selection</h2>
+
+    {% if courses %}
+        <div class="course-container">
+            {% for course in courses %}
+                {% if not selected_course or course.id != selected_course.id %}
+                    <div class="course" style="padding:20px;background:white;border:1px solid #eee;border-radius:20px;">
+                        <div style="height:160px;margin-bottom:14px;border-radius:16px;overflow:hidden;border:1px solid #eee;background:#fafafa;">
+                            {% if course.image %}
+                                <img
+                                    src="{{ course.image.url }}"
+                                    alt="{{ course.name }}"
+                                    style="width:100%;height:160px;object-fit:cover;"
+                                />
+                            {% else %}
+                                <div style="width:100%;height:160px;display:flex;align-items:center;justify-content:center;color:#777;font-weight:700;">
+                                    No Image
+                                </div>
+                            {% endif %}
+                        </div>
+
+                        <h3 style="margin-bottom:8px;">{{ course.name }}</h3>
+
+                        {% if course.description %}
+                            <p style="color:#555;line-height:1.6;margin-bottom:12px;">{{ course.description }}</p>
+                        {% endif %}
+
+                        {% if course.duration %}
+                            <p><b>Duration:</b> {{ course.duration }}</p>
+                        {% endif %}
+
+                        <p style="margin-top:8px;"><b>Fee:</b> ₹{{ course.fee }}</p>
+
+                        <form method="POST" action="{% url 'course_selection' %}" style="margin-top:15px;">
+                            {% csrf_token %}
+                            <input type="hidden" name="course" value="{{ course.id }}">
+                            <button type="submit" class="select-btn">Select Course</button>
+                        </form>
+                    </div>
+                {% endif %}
+            {% endfor %}
+        </div>
+    {% else %}
+        <p style="text-align:center;color:#555;">No active courses available right now.</p>
+    {% endif %}
+</div>
+{% endblock %}
+

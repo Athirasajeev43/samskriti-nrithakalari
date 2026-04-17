@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div style="max-width:950px;margin:40px auto;padding:20px;">
+    <h2 style="text-align:center;color:#8B0000;margin-bottom:20px;">{{ mode }}</h2>
+
+    <div style="background:white;border-radius:20px;border:1px solid #eee;padding:20px;box-shadow:0 10px 30px rgba(0,0,0,0.05);">
+        <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <div style="display:flex;gap:12px;margin-top:10px;">
+                <button type="submit" style="flex:1;padding:12px;border:none;border-radius:14px;background:#8B1E3F;color:white;font-weight:800;cursor:pointer;">
+                    Save
+                </button>
+                <a href="{% url 'admin_gallery_images' %}" style="flex:1;display:flex;align-items:center;justify-content:center;padding:12px;border-radius:14px;border:1px solid #eee;background:#fafafa;color:#333;text-decoration:none;font-weight:800;">
+                    Cancel
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
+

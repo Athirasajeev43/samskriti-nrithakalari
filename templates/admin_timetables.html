@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div style="max-width:1200px;margin:40px auto;padding:20px;">
+    <h2 style="text-align:center;color:#8B0000;margin-bottom:20px;">Manage Timetables</h2>
+
+    <div style="text-align:right;margin-bottom:15px;">
+        <a href="{% url 'admin_timetable_add' %}" style="padding:10px 14px;border-radius:14px;background:#8B1E3F;color:white;text-decoration:none;font-weight:800;">
+            Add Timetable
+        </a>
+    </div>
+
+    {% if timetable_entries %}
+        <div style="overflow:auto;border-radius:16px;border:1px solid #eee;background:white;">
+            <table style="width:100%;border-collapse:collapse;">
+                <thead>
+                    <tr style="background:#fafafa;">
+                        <th style="text-align:left;padding:12px 14px;border-bottom:1px solid #eee;">Course</th>
+                        <th style="text-align:left;padding:12px 14px;border-bottom:1px solid #eee;">Day</th>
+                        <th style="text-align:left;padding:12px 14px;border-bottom:1px solid #eee;">Time</th>
+                        <th style="text-align:left;padding:12px 14px;border-bottom:1px solid #eee;">Mode</th>
+                        <th style="text-align:left;padding:12px 14px;border-bottom:1px solid #eee;">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for t in timetable_entries %}
+                        <tr>
+                            <td style="padding:12px 14px;border-bottom:1px solid #f2f2f2;">{{ t.course.name }}</td>
+                            <td style="padding:12px 14px;border-bottom:1px solid #f2f2f2;">{{ t.day }}</td>
+                            <td style="padding:12px 14px;border-bottom:1px solid #f2f2f2;">{{ t.time }}</td>
+                            <td style="padding:12px 14px;border-bottom:1px solid #f2f2f2;">{{ t.mode }}</td>
+                            <td style="padding:12px 14px;border-bottom:1px solid #f2f2f2;">
+                                <a href="{% url 'admin_timetable_edit' t.id %}" style="padding:8px 10px;border-radius:12px;border:1px solid #eee;background:#fafafa;text-decoration:none;font-weight:800;color:#333;">Edit</a>
+                                <a href="{% url 'admin_timetable_delete' t.id %}" style="margin-left:8px;padding:8px 10px;border-radius:12px;border:1px solid #eee;background:#fff0f0;text-decoration:none;font-weight:800;color:#b00020;">Delete</a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% else %}
+        <p style="text-align:center;color:#555;">No timetable entries found.</p>
+    {% endif %}
+</div>
+{% endblock %}
+

@@ -1,0 +1,135 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div style="max-width:1000px;margin:40px auto;padding:30px;">
+    <h2 style="text-align:center;color:#8B0000;margin-bottom:25px;">My Profile</h2>
+
+    <div style="background:white;border-radius:25px;padding:25px;box-shadow:0 10px 40px rgba(0,0,0,0.08);">
+        <div style="display:flex;gap:20px;align-items:flex-start;flex-wrap:wrap;">
+            <div style="flex:1;">
+                <form method="POST">
+                    {% csrf_token %}
+
+                    <div style="margin-bottom:15px;">
+                        <label style="display:block;margin-bottom:8px;font-weight:700;">Name</label>
+                        <input
+                            type="text"
+                            name="name"
+                            value="{{ request.user.first_name }}"
+                            style="width:100%;padding:12px;border-radius:12px;border:1px solid #eaeaea;"
+                        />
+                    </div>
+
+                    <div style="margin-bottom:15px;">
+                        <label style="display:block;margin-bottom:8px;font-weight:700;">Age</label>
+                        <input
+                            type="number"
+                            name="age"
+                            min="1"
+                            max="120"
+                            value="{{ profile.age }}"
+                            required
+                            style="width:100%;padding:12px;border-radius:12px;border:1px solid #eaeaea;"
+                        />
+                    </div>
+
+                    <div style="margin-bottom:15px;">
+                        <label style="display:block;margin-bottom:8px;font-weight:700;">Phone</label>
+                        <input
+                            type="text"
+                            name="phone"
+                            value="{{ profile.phone }}"
+                            required
+                            style="width:100%;padding:12px;border-radius:12px;border:1px solid #eaeaea;"
+                        />
+                    </div>
+
+                    <div style="margin-bottom:15px;">
+                        <label style="display:block;margin-bottom:8px;font-weight:700;">Address</label>
+                        <textarea
+                            name="address"
+                            rows="3"
+                            style="width:100%;padding:12px;border-radius:12px;border:1px solid #eaeaea;"
+                        >{{ profile.address }}</textarea>
+                    </div>
+
+                    <div style="margin-bottom:15px;">
+                        <label style="display:block;margin-bottom:8px;font-weight:700;">New Password</label>
+                        <input
+                            type="password"
+                            name="new_password"
+                            placeholder="Leave blank to keep same password"
+                            style="width:100%;padding:12px;border-radius:12px;border:1px solid #eaeaea;"
+                        />
+                    </div>
+
+                    <div style="margin-bottom:15px;">
+                        <label style="display:block;margin-bottom:8px;font-weight:700;">Confirm Password</label>
+                        <input
+                            type="password"
+                            name="confirm_password"
+                            style="width:100%;padding:12px;border-radius:12px;border:1px solid #eaeaea;"
+                        />
+                    </div>
+
+                    <button type="submit" style="padding:12px 18px;border:none;border-radius:14px;background:#8B1E3F;color:white;font-weight:700;cursor:pointer;">
+                        Update Profile
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        <hr style="border:none;border-top:1px solid #eee;margin:25px 0;">
+
+        <h3 style="margin-bottom:10px;color:#8B0000;">Registered Details</h3>
+
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;">
+            <div style="background:#fafafa;border:1px solid #eee;border-radius:16px;padding:14px;">
+                <b>Course:</b>
+                {% if profile.selected_course %}
+                    {{ profile.selected_course.name }}
+                {% else %}
+                    Not selected
+                {% endif %}
+            </div>
+
+            <div style="background:#fafafa;border:1px solid #eee;border-radius:16px;padding:14px;">
+                <b>Timetable:</b>
+                {% if profile.selected_timetable %}
+                    {{ profile.selected_timetable.day }} - {{ profile.selected_timetable.time }} ({{ profile.selected_timetable.mode }})
+                {% else %}
+                    Not selected
+                {% endif %}
+            </div>
+
+            <div style="background:#fafafa;border:1px solid #eee;border-radius:16px;padding:14px;">
+                <b>Payment Status:</b>
+                {% if profile.admission_fee_paid %}
+                    <span style="color:green;font-weight:800;">Paid</span>
+                {% else %}
+                    <span style="color:#b00020;font-weight:800;">Not Paid</span>
+                {% endif %}
+            </div>
+
+            <div style="background:#fafafa;border:1px solid #eee;border-radius:16px;padding:14px;">
+                <b>Payment ID:</b>
+                {% if profile.payment_id %}
+                    {{ profile.payment_id }}
+                {% else %}
+                    -
+                {% endif %}
+            </div>
+
+            <div style="background:#fafafa;border:1px solid #eee;border-radius:16px;padding:14px;">
+                <b>Booking Date:</b>
+                {% if booking and booking.booking_date %}
+                    {{ booking.booking_date }}
+                {% else %}
+                    -
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+

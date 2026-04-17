@@ -1,0 +1,800 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<style>
+    /* Rich Cultural Dance Academy Styling */
+    @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Montserrat:wght@300;400;500;600&display=swap');
+
+    :root {
+        --temple-red: #B22222;
+        --silk-gold: #C5A028;
+        --sandalwood: #9E7B5C;
+        --ivory: #FDF5E6;
+        --maroon-deep: #6B0F1A;
+        --brass: #B8860B;
+        --stone-gray: #5C5048;
+        --cream-soft: #FAEBD7;
+        --gradient-temple: linear-gradient(135deg, #B22222 0%, #8B4513 50%, #C5A028 100%);
+        --shadow-rich: 0 20px 40px -10px rgba(139, 69, 19, 0.3);
+    }
+
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    body {
+        background: linear-gradient(135deg, #2C1810 0%, #4A2C1A 100%);
+        font-family: 'Montserrat', sans-serif;
+        min-height: 100vh;
+        position: relative;
+    }
+
+    /* Rich Temple Background Pattern */
+    body::before {
+        content: '';
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-image: 
+            repeating-linear-gradient(45deg, rgba(197, 160, 40, 0.02) 0px, rgba(197, 160, 40, 0.02) 2px, transparent 2px, transparent 6px),
+            repeating-linear-gradient(135deg, rgba(178, 34, 34, 0.02) 0px, rgba(178, 34, 34, 0.02) 4px, transparent 4px, transparent 8px);
+        pointer-events: none;
+        z-index: 0;
+    }
+
+    /* Decorative Temple Pillars */
+    .temple-pillar {
+        position: fixed;
+        top: 0;
+        width: 40px;
+        height: 100%;
+        background: linear-gradient(90deg, var(--sandalwood), var(--brass), var(--sandalwood));
+        opacity: 0.15;
+        z-index: 0;
+    }
+
+    .pillar-left {
+        left: 0;
+    }
+
+    .pillar-right {
+        right: 0;
+    }
+
+    /* Main Container */
+    .cultural-container {
+        max-width: 1400px;
+        margin: 60px auto;
+        padding: 0 60px;
+        position: relative;
+        z-index: 2;
+    }
+
+    /* Header with Temple Arch Design */
+    .temple-header {
+        text-align: center;
+        margin-bottom: 60px;
+        position: relative;
+    }
+
+    h2 {
+        font-size: 64px;
+        font-weight: 700;
+        color: var(--silk-gold);
+        margin-bottom: 15px;
+        font-family: 'Cormorant Garamond', serif;
+        letter-spacing: 2px;
+        text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.3);
+        position: relative;
+        display: inline-block;
+        padding: 0 30px;
+        animation: fadeInDown 0.8s ease;
+    }
+
+    @keyframes fadeInDown {
+        from {
+            opacity: 0;
+            transform: translateY(-30px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .temple-arch {
+        position: absolute;
+        top: -30px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 200px;
+        height: 40px;
+        background: linear-gradient(90deg, transparent, var(--silk-gold), var(--temple-red), var(--silk-gold), transparent);
+        clip-path: polygon(0% 0%, 100% 0%, 90% 100%, 10% 100%);
+        opacity: 0.3;
+    }
+
+    h2::before, h2::after {
+        content: '🕉️';
+        font-size: 36px;
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        opacity: 0.4;
+        animation: omGlow 3s ease-in-out infinite;
+    }
+
+    h2::before {
+        left: -20px;
+    }
+
+    h2::after {
+        right: -20px;
+    }
+
+    @keyframes omGlow {
+        0%, 100% { opacity: 0.4; transform: translateY(-50%) scale(1); }
+        50% { opacity: 0.8; transform: translateY(-50%) scale(1.1); }
+    }
+
+    .header-sanskrit {
+        font-family: 'Cormorant Garamond', serif;
+        font-size: 24px;
+        color: var(--cream-soft);
+        opacity: 0.7;
+        margin-top: 10px;
+        font-style: italic;
+    }
+
+    /* Course Grid */
+    .course-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 35px;
+        margin-top: 30px;
+    }
+
+    /* Rich Cultural Course Card */
+    .cultural-card {
+        background: rgba(252, 244, 224, 0.97);
+        backdrop-filter: blur(5px);
+        border-radius: 30px 30px 30px 30px;
+        padding: 40px;
+        box-shadow: var(--shadow-rich);
+        transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        position: relative;
+        overflow: hidden;
+        border: 2px solid var(--silk-gold);
+        animation: cardReveal 0.6s ease backwards;
+    }
+
+    .cultural-card:nth-child(1) { animation-delay: 0.1s; }
+    .cultural-card:nth-child(2) { animation-delay: 0.2s; }
+    .cultural-card:nth-child(3) { animation-delay: 0.3s; }
+    .cultural-card:nth-child(4) { animation-delay: 0.4s; }
+
+    @keyframes cardReveal {
+        from {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    /* Temple Carving Effect */
+    .cultural-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 8px;
+        background: linear-gradient(90deg, var(--temple-red), var(--silk-gold), var(--temple-red));
+    }
+
+    .cultural-card::after {
+        content: '';
+        position: absolute;
+        bottom: 20px;
+        right: 20px;
+        width: 80px;
+        height: 80px;
+        background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" fill="%23C5A028" opacity="0.05"><path d="M50,20 Q60,30 70,20 Q80,10 85,25 Q90,40 75,50 Q60,60 50,70 Q40,80 25,75 Q10,70 20,55 Q30,40 50,20"/></svg>');
+        background-size: cover;
+        opacity: 0.1;
+        pointer-events: none;
+    }
+
+    .cultural-card:hover {
+        transform: translateY(-8px) scale(1.02);
+        box-shadow: 0 30px 60px -10px rgba(178, 34, 34, 0.4);
+        border-color: var(--temple-red);
+    }
+
+    /* Dance Form Title */
+    .cultural-card h3 {
+        font-size: 42px;
+        font-weight: 700;
+        color: var(--maroon-deep);
+        margin-bottom: 25px;
+        font-family: 'Cormorant Garamond', serif;
+        position: relative;
+        padding-bottom: 15px;
+        letter-spacing: 1px;
+    }
+
+    .cultural-card h3::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 80px;
+        height: 3px;
+        background: linear-gradient(90deg, var(--temple-red), var(--silk-gold));
+        border-radius: 3px;
+        transition: width 0.4s ease;
+    }
+
+    .cultural-card:hover h3::after {
+        width: 150px;
+    }
+
+    /* Description Styling */
+    .cultural-card p {
+        font-size: 16px;
+        line-height: 1.8;
+        color: var(--stone-gray);
+        margin-bottom: 20px;
+        font-weight: 400;
+    }
+
+    .cultural-card p b {
+        color: var(--temple-red);
+        font-weight: 600;
+        font-size: 18px;
+        display: inline-block;
+        margin-right: 5px;
+    }
+
+    /* Special styling for the detailed description paragraphs */
+    .cultural-card p:first-of-type {
+        font-size: 16.5px;
+        line-height: 1.9;
+        color: #4A3B2C;
+        background: linear-gradient(135deg, rgba(197, 160, 40, 0.05), rgba(178, 34, 34, 0.05));
+        padding: 20px;
+        border-radius: 20px;
+        margin: 20px 0;
+        border-left: 4px solid var(--silk-gold);
+        font-style: italic;
+    }
+
+    .cultural-card p:nth-of-type(2) {
+        background: rgba(139, 69, 19, 0.03);
+        padding: 15px 20px;
+        border-radius: 15px;
+        margin: 15px 0;
+    }
+
+    /* Info Grid */
+    .info-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 20px;
+        margin: 25px 0;
+    }
+
+    .info-item {
+        background: rgba(197, 160, 40, 0.08);
+        padding: 15px;
+        border-radius: 15px;
+        text-align: center;
+        border: 1px solid rgba(197, 160, 40, 0.2);
+        transition: all 0.3s ease;
+    }
+
+    .info-item:hover {
+        background: rgba(197, 160, 40, 0.15);
+        transform: scale(1.05);
+    }
+
+    .info-label {
+        font-size: 13px;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        color: var(--sandalwood);
+        font-weight: 600;
+        margin-bottom: 5px;
+    }
+
+    .info-value {
+        font-size: 22px;
+        font-weight: 700;
+        color: var(--maroon-deep);
+        font-family: 'Cormorant Garamond', serif;
+    }
+
+    /* Age Group & Fee Section */
+    .fee-section {
+        margin: 25px 0;
+        padding: 20px;
+        background: linear-gradient(135deg, rgba(178, 34, 34, 0.05), rgba(197, 160, 40, 0.05));
+        border-radius: 20px;
+        border: 1px dashed var(--silk-gold);
+    }
+
+    .fee-title {
+        font-size: 20px;
+        color: var(--maroon-deep);
+        font-weight: 700;
+        margin-bottom: 15px;
+        font-family: 'Cormorant Garamond', serif;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .fee-title::before {
+        content: '💰';
+        font-size: 24px;
+    }
+
+    .fee-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 12px 15px;
+        margin: 5px 0;
+        background: white;
+        border-radius: 12px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+        transition: transform 0.3s ease;
+    }
+
+    .fee-row:hover {
+        transform: translateX(10px);
+        background: linear-gradient(90deg, white, rgba(197, 160, 40, 0.1));
+    }
+
+    .age-range {
+        font-weight: 600;
+        color: var(--stone-gray);
+    }
+
+    .price {
+        font-size: 22px;
+        font-weight: 700;
+        color: var(--temple-red);
+        background: rgba(178, 34, 34, 0.1);
+        padding: 5px 15px;
+        border-radius: 25px;
+        font-family: 'Cormorant Garamond', serif;
+    }
+
+    /* Class Details */
+    .class-details {
+        display: flex;
+        gap: 15px;
+        margin-top: 25px;
+    }
+
+    .detail-block {
+        flex: 1;
+        padding: 15px;
+        background: var(--gradient-temple);
+        color: white;
+        border-radius: 15px;
+        text-align: center;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .detail-block::before {
+        content: '';
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+        transform: rotate(45deg);
+        animation: shine 3s infinite;
+    }
+
+    @keyframes shine {
+        0% { transform: rotate(45deg) translateX(-100%); }
+        20% { transform: rotate(45deg) translateX(100%); }
+        100% { transform: rotate(45deg) translateX(100%); }
+    }
+
+    .detail-label {
+        font-size: 12px;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        opacity: 0.9;
+        margin-bottom: 5px;
+    }
+
+    .detail-value {
+        font-size: 20px;
+        font-weight: 700;
+        font-family: 'Cormorant Garamond', serif;
+    }
+
+    /* Decorative Elements */
+    .sanskrit-mantra {
+        text-align: center;
+        font-family: 'Cormorant Garamond', serif;
+        font-size: 18px;
+        color: var(--silk-gold);
+        margin: 30px 0;
+        opacity: 0.7;
+        font-style: italic;
+    }
+
+    .kolam-border {
+        display: flex;
+        justify-content: center;
+        gap: 15px;
+        margin: 50px 0 20px;
+    }
+
+    .kolam-dot {
+        width: 12px;
+        height: 12px;
+        background: var(--silk-gold);
+        border-radius: 50%;
+        opacity: 0.3;
+        animation: dotPulse 2s infinite;
+    }
+
+    .kolam-dot:nth-child(2) { animation-delay: 0.2s; background: var(--temple-red); }
+    .kolam-dot:nth-child(3) { animation-delay: 0.4s; background: var(--brass); }
+    .kolam-dot:nth-child(4) { animation-delay: 0.6s; background: var(--silk-gold); }
+    .kolam-dot:nth-child(5) { animation-delay: 0.8s; background: var(--temple-red); }
+
+    @keyframes dotPulse {
+        0%, 100% { transform: scale(1); opacity: 0.3; }
+        50% { transform: scale(1.3); opacity: 0.6; }
+    }
+
+    /* Responsive Design */
+    @media (max-width: 1024px) {
+        .cultural-container {
+            padding: 0 30px;
+        }
+
+        h2 {
+            font-size: 52px;
+        }
+
+        .course-grid {
+            gap: 25px;
+        }
+    }
+
+    @media (max-width: 768px) {
+        .course-grid {
+            grid-template-columns: 1fr;
+        }
+
+        h2 {
+            font-size: 42px;
+        }
+
+        .cultural-card {
+            padding: 30px;
+        }
+
+        .cultural-card h3 {
+            font-size: 36px;
+        }
+
+        .info-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .class-details {
+            flex-direction: column;
+        }
+
+        .temple-pillar {
+            width: 20px;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .cultural-container {
+            padding: 0 20px;
+        }
+
+        h2 {
+            font-size: 32px;
+        }
+
+        h2::before, h2::after {
+            display: none;
+        }
+
+        .cultural-card {
+            padding: 25px;
+        }
+
+        .cultural-card h3 {
+            font-size: 30px;
+        }
+
+        .fee-row {
+            flex-direction: column;
+            gap: 10px;
+            text-align: center;
+        }
+    }
+
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar {
+        width: 12px;
+    }
+
+    ::-webkit-scrollbar-track {
+        background: var(--cream-soft);
+    }
+
+    ::-webkit-scrollbar-thumb {
+        background: linear-gradient(135deg, var(--temple-red), var(--silk-gold));
+        border-radius: 6px;
+        border: 3px solid var(--cream-soft);
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+        background: linear-gradient(135deg, var(--silk-gold), var(--temple-red));
+    }
+
+    /* Selection Color */
+    ::selection {
+        background: var(--silk-gold);
+        color: var(--maroon-deep);
+    }
+</style>
+
+<!-- Temple Pillars -->
+<div class="temple-pillar pillar-left"></div>
+<div class="temple-pillar pillar-right"></div>
+
+<div class="cultural-container">
+    <!-- Header with Temple Theme -->
+    <div class="temple-header">
+        <div class="temple-arch"></div>
+        <h2>Our Dance Courses</h2>
+        <div class="header-sanskrit">नृत्यं भगवान् नटराजः</div>
+    </div>
+
+    <!-- Course Grid -->
+    <div class="course-grid">
+        <!-- Bharatanatyam Card -->
+        <div class="cultural-card">
+            <h3>Bharatanatyam</h3>
+            
+            <p>
+                <b>Description:</b> Bharatanatyam is one of the oldest classical dance forms of India originating from Tamil Nadu. 
+                It is known for its graceful hand gestures (mudras), expressive facial expressions, and precise footwork. 
+                This dance form combines rhythm, emotion, and storytelling based on Indian mythology and traditional themes.
+            </p>
+
+            <p>
+                Students will learn basic adavus (steps), body posture, hand gestures, facial expressions, and simple dance sequences.
+            </p>
+
+            <div class="info-grid">
+               
+                <div class="info-item">
+                    <div class="info-label">Level</div>
+                    <div class="info-value">All Levels</div>
+                </div>
+            </div>
+
+            <div class="fee-section">
+                <div class="fee-title">Age Group & Fee</div>
+                <div class="fee-row">
+                    <span class="age-range">6 – 19 years</span>
+                    <span class="price">₹1000 / month</span>
+                </div>
+                <div class="fee-row">
+                    <span class="age-range">20 years and above</span>
+                    <span class="price">₹1500 / month</span>
+                </div>
+            </div>
+
+            <div class="class-details">
+                <div class="detail-block">
+                    <div class="detail-label">Class Days</div>
+                    <div class="detail-value">Monday & Wednesday</div>
+                </div>
+                <div class="detail-block">
+                    <div class="detail-label">Class Time</div>
+                    <div class="detail-value">5 PM – 7 PM</div>
+                </div>
+            </div>
+            <form method="POST">
+    {% csrf_token %}
+    <input type="hidden" name="course" value="Bharatanatyam">
+    <button type="submit" class="select-btn">Select Course</button>
+</form>
+        </div>
+
+        <!-- Mohiniyattam Card -->
+        <div class="cultural-card">
+            <h3>Mohiniyattam</h3>
+            
+            <p>
+                <b>Description:</b> Mohiniyattam is a classical dance form from Kerala known for its soft, graceful, and feminine movements. 
+                The dance style is characterized by gentle swaying motions, elegant footwork, and expressive storytelling.
+            </p>
+
+            <p>
+                Students will learn basic steps, body movements, rhythm patterns, and expressive techniques used in Mohiniyattam.
+            </p>
+
+            <div class="info-grid">
+             
+                <div class="info-item">
+                    <div class="info-label">Level</div>
+                    <div class="info-value">All Levels</div>
+                </div>
+            </div>
+
+            <div class="fee-section">
+                <div class="fee-title">Age Group & Fee</div>
+                <div class="fee-row">
+                    <span class="age-range">8 – 19 years</span>
+                    <span class="price">₹1000 / month</span>
+                </div>
+                <div class="fee-row">
+                    <span class="age-range">20 years and above</span>
+                    <span class="price">₹1500 / month</span>
+                </div>
+            </div>
+
+            <div class="class-details">
+                <div class="detail-block">
+                    <div class="detail-label">Class Days</div>
+                    <div class="detail-value">Tuesday & Thursday</div>
+                </div>
+                <div class="detail-block">
+                    <div class="detail-label">Class Time</div>
+                    <div class="detail-value">5 PM – 7 PM</div>
+                </div>
+            </div>
+            <form method="POST">
+    {% csrf_token %}
+    <input type="hidden" name="course" value="Mohiniyattam">
+    <button type="submit" class="select-btn">Select Course</button>
+</form>
+        </div>
+
+        <!-- Kuchipudi Card -->
+        <div class="cultural-card">
+            <h3>Kuchipudi</h3>
+            
+            <p>
+                <b>Description:</b> Kuchipudi is a classical dance form from Andhra Pradesh that combines graceful movements with energetic footwork. 
+                It is known for expressive storytelling and dramatic presentation of mythological themes.
+            </p>
+
+            <p>
+                Students will learn rhythmic footwork, expressive movements, and traditional dance sequences used in Kuchipudi.
+            </p>
+
+            <div class="info-grid">
+           
+                <div class="info-item">
+                    <div class="info-label">Level</div>
+                    <div class="info-value">All Levels</div>
+                </div>
+            </div>
+
+            <div class="fee-section">
+                <div class="fee-title">Age Group & Fee</div>
+                <div class="fee-row">
+                    <span class="age-range">8 – 19 years</span>
+                    <span class="price">₹1000 / month</span>
+                </div>
+                <div class="fee-row">
+                    <span class="age-range">20 years and above</span>
+                    <span class="price">₹1500 / month</span>
+                </div>
+            </div>
+
+            <div class="class-details">
+                <div class="detail-block">
+                    <div class="detail-label">Class Days</div>
+                    <div class="detail-value">Friday</div>
+                </div>
+                <div class="detail-block">
+                    <div class="detail-label">Class Time</div>
+                    <div class="detail-value">5 PM – 7 PM</div>
+                </div>
+            </div>
+            <form method="POST">
+    {% csrf_token %}
+    <input type="hidden" name="course" value="Kuchipudi">
+    <button type="submit" class="select-btn">Select Course</button>
+</form>
+        </div>
+
+<!-- Folk Dance Card -->
+<div class="cultural-card">
+    <h3>Folk Dance</h3>
+    
+    <p>
+        <b>Description:</b> Folk dance represents the traditional dance culture of different regions of Kerala and India. 
+        These dances are lively, energetic, and usually performed during festivals, cultural events, and celebrations.
+    </p>
+
+    <p>
+        Students will learn simple steps, group formations, rhythm coordination, and performance skills used in folk dances.
+    </p>
+
+    <div class="info-grid">
+        <div class="info-item">
+            <div class="info-label">Level</div>
+            <div class="info-value">All Levels</div>
+        </div>
+    </div>
+
+    <div class="fee-section">
+        <div class="fee-title">Age Group & Fee</div>
+        <div class="fee-row">
+            <span class="age-range">6 – 19 years</span>
+            <span class="price">₹800 / month</span>
+        </div>
+        <div class="fee-row">
+            <span class="age-range">20 years and above</span>
+            <span class="price">₹1200 / month</span>
+        </div>
+    </div>
+
+    <div class="class-details">
+        <div class="detail-block">
+            <div class="detail-label">Class Days</div>
+            <div class="detail-value">Saturday</div>
+        </div>
+        <div class="detail-block">
+            <div class="detail-label">Class Time</div>
+            <div class="detail-value">4 PM – 6 PM</div>
+        </div>
+    </div>
+
+    <form method="POST">
+        {% csrf_token %}
+        <input type="hidden" name="course" value="Folk Dance">
+        <button type="submit" class="select-btn">Select Course</button>
+    </form>
+
+</div>
+
+    <!-- Kolam Decoration -->
+    <div class="kolam-border">
+        <div class="kolam-dot"></div>
+        <div class="kolam-dot"></div>
+        <div class="kolam-dot"></div>
+        <div class="kolam-dot"></div>
+        <div class="kolam-dot"></div>
+    </div>
+
+    <!-- Sanskrit Quote -->
+    <div class="sanskrit-mantra">
+        <p>“अंगिकं भुवनं यस्य वाचिकं सर्व वाङ्मयम्”</p>
+        <p style="font-size: 14px; opacity: 0.6;">The body is the world, speech is all expression</p>
+    </div>
+</div>
+
+{% endblock %}

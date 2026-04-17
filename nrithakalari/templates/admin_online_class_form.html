@@ -1,0 +1,107 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div style="max-width:1100px;margin:40px auto;padding:20px;">
+    <h2 style="text-align:center;color:#8B0000;margin-bottom:18px;">{{ mode }}</h2>
+
+    <div style="background:white;border:1px solid #eee;border-radius:20px;padding:20px;box-shadow:0 10px 30px rgba(0,0,0,0.05);">
+        <form method="POST">
+            {% csrf_token %}
+
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+                <div>
+                    <label style="display:block;margin-bottom:8px;font-weight:900;color:#333;">Course</label>
+                    {{ form.course }}
+                </div>
+
+                <div>
+                    <label style="display:block;margin-bottom:8px;font-weight:900;color:#333;">Schedule (Day + Time)</label>
+                    {{ form.timetable_slot }}
+                </div>
+
+                <div>
+                    <label style="display:block;margin-bottom:8px;font-weight:900;color:#333;">Schedule Date</label>
+                    {{ form.class_date }}
+                </div>
+
+                <div>
+                    <label style="display:block;margin-bottom:8px;font-weight:900;color:#333;">Active</label>
+                    {{ form.is_active }}
+                </div>
+            </div>
+
+            <div style="margin-top:14px;">
+                <label style="display:block;margin-bottom:8px;font-weight:900;color:#333;">Class Title</label>
+                {{ form.title }}
+            </div>
+
+            <div style="margin-top:14px;">
+                <label style="display:block;margin-bottom:8px;font-weight:900;color:#333;">Description</label>
+                {{ form.description }}
+            </div>
+
+            <div style="margin-top:14px;">
+                <label style="display:block;margin-bottom:8px;font-weight:900;color:#333;">Meeting URL</label>
+                {{ form.meeting_url }}
+            </div>
+
+            <div style="margin-top:14px;">
+                <label style="display:block;margin-bottom:8px;font-weight:900;color:#333;">Reminder Offset (minutes)</label>
+                {{ form.reminder_offset_minutes }}
+            </div>
+
+            <div style="display:flex;gap:12px;margin-top:18px;flex-wrap:wrap;">
+                <button type="submit" style="flex:1;min-width:180px;padding:12px;border:none;border-radius:14px;background:#8B1E3F;color:white;font-weight:900;cursor:pointer;">
+                    Save
+                </button>
+                <a href="{% url 'admin_online_classes' %}" style="flex:1;min-width:180px;display:flex;align-items:center;justify-content:center;padding:12px;border-radius:14px;border:1px solid #eee;background:#fafafa;color:#333;text-decoration:none;font-weight:900;">
+                    Cancel
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+// Filter timetable-slot options based on selected course (client-side).
+// This makes sure the admin only picks a slot from the chosen course.
+(function(){
+    var courseSelect = document.getElementById("id_course");
+    var slotSelect = document.getElementById("id_timetable_slot");
+    if (!courseSelect || !slotSelect) return;
+
+    var slotToCourse = {};
+    {% for s in timetable_slots_for_js %}
+        slotToCourse["{{ s.id }}"] = "{{ s.course_id }}";
+    {% endfor %}
+
+    function applyFilter(){
+        var selectedCourseId = courseSelect.value;
+        for (var i = 0; i < slotSelect.options.length; i++){
+            var opt = slotSelect.options[i];
+            var slotId = opt.value;
+
+            // Keep empty/placeholder option always enabled.
+            if (!slotId) {
+                opt.disabled = false;
+                opt.hidden = false;
+                continue;
+            }
+
+            var optCourseId = slotToCourse[slotId];
+            if (!selectedCourseId || !optCourseId || optCourseId != selectedCourseId){
+                opt.disabled = true;
+                opt.hidden = true;
+            } else {
+                opt.disabled = false;
+                opt.hidden = false;
+            }
+        }
+    }
+
+    courseSelect.addEventListener("change", applyFilter);
+    applyFilter();
+})();
+</script>
+{% endblock %}
+

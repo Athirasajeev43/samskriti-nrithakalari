@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div style="max-width:1200px;margin:40px auto;padding:20px;">
+    <h2 style="text-align:center;color:#8B0000;margin-bottom:20px;">Bookings & Payments</h2>
+
+    <div style="text-align:right;margin-bottom:15px;">
+        <a href="{% url 'admin_students' %}" style="padding:10px 14px;border-radius:14px;background:#fafafa;border:1px solid #eee;color:#333;text-decoration:none;font-weight:800;">
+            Registered Students
+        </a>
+    </div>
+
+    <div style="overflow:auto;border-radius:16px;border:1px solid #eee;background:white;">
+        <table style="width:100%;border-collapse:collapse;">
+            <thead>
+                <tr style="background:#fafafa;">
+                    <th style="text-align:left;padding:12px 14px;border-bottom:1px solid #eee;">Student</th>
+                    <th style="text-align:left;padding:12px 14px;border-bottom:1px solid #eee;">Course</th>
+                    <th style="text-align:left;padding:12px 14px;border-bottom:1px solid #eee;">Timetable</th>
+                        <th style="text-align:left;padding:12px 14px;border-bottom:1px solid #eee;">Booking Date</th>
+                    <th style="text-align:left;padding:12px 14px;border-bottom:1px solid #eee;">Status</th>
+                    <th style="text-align:left;padding:12px 14px;border-bottom:1px solid #eee;">Payment ID</th>
+                    <th style="text-align:left;padding:12px 14px;border-bottom:1px solid #eee;">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for st in students %}
+                    <tr>
+                        <td style="padding:12px 14px;border-bottom:1px solid #f2f2f2;">{{ st.user.username }}</td>
+                        <td style="padding:12px 14px;border-bottom:1px solid #f2f2f2;">{% if st.selected_course %}{{ st.selected_course.name }}{% else %}-{% endif %}</td>
+                        <td style="padding:12px 14px;border-bottom:1px solid #f2f2f2;">{% if st.selected_timetable %}{{ st.selected_timetable.day }} - {{ st.selected_timetable.time }} ({{ st.selected_timetable.mode }}){% else %}-{% endif %}</td>
+                        <td style="padding:12px 14px;border-bottom:1px solid #f2f2f2;">
+                            {% if st.booking %}{{ st.booking.booking_date }}{% else %}-{% endif %}
+                        </td>
+                        <td style="padding:12px 14px;border-bottom:1px solid #f2f2f2;">
+                            {% if st.admission_fee_paid %}
+                                <span style="color:green;font-weight:900;">Paid</span>
+                            {% else %}
+                                <span style="color:#b00020;font-weight:900;">Pending</span>
+                            {% endif %}
+                        </td>
+                        <td style="padding:12px 14px;border-bottom:1px solid #f2f2f2;">{% if st.payment_id %}{{ st.payment_id }}{% else %}-{% endif %}</td>
+                        <td style="padding:12px 14px;border-bottom:1px solid #f2f2f2;">
+                            <form method="POST" style="display:flex;gap:10px;align-items:center;">
+                                {% csrf_token %}
+                                <input type="hidden" name="profile_id" value="{{ st.id }}">
+                                {% if st.admission_fee_paid %}
+                                    <input type="hidden" name="action" value="mark_pending">
+                                    <button type="submit" style="padding:8px 12px;border:none;border-radius:12px;background:#eee;color:#333;font-weight:900;cursor:pointer;">
+                                        Mark Pending
+                                    </button>
+                                {% else %}
+                                    <input type="hidden" name="action" value="mark_paid">
+                                    <button type="submit" style="padding:8px 12px;border:none;border-radius:12px;background:#8B1E3F;color:white;font-weight:900;cursor:pointer;">
+                                        Mark Paid
+                                    </button>
+                                {% endif %}
+                            </form>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}
+

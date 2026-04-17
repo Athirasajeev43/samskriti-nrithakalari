@@ -1,0 +1,84 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+
+<head>
+<title>Samskriti Nrithakalari</title>
+<link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+
+<body>
+
+<!-- SHOW ONLY AFTER LOGIN -->
+{% if request.user.is_authenticated %}
+
+<!-- TOP BAR -->
+<div class="topbar">
+    <div class="menu-icon" onclick="toggleMenu()">☰</div>
+    <h2>Samskriti Nrithakalari</h2>
+</div>
+
+<!-- SIDEBAR -->
+<div id="sidebar" class="sidebar">
+
+    {% if request.user.is_staff or request.user.is_superuser %}
+        <a href="{% url 'admin_dashboard' %}">Admin Dashboard</a>
+        <a href="{% url 'admin_courses' %}">Manage Courses</a>
+        <a href="{% url 'admin_timetables' %}">Manage Timetables</a>
+        <a href="{% url 'admin_online_classes' %}">Manage Online Classes</a>
+        <a href="{% url 'admin_instructors' %}">Manage Instructors</a>
+        <a href="{% url 'admin_programs' %}">Manage Programs</a>
+        <a href="{% url 'admin_gallery_images' %}">Manage Gallery</a>
+        <a href="{% url 'admin_students' %}">Registered Students</a>
+        <a href="{% url 'admin_payments' %}">Bookings & Payments</a>
+        <a href="{% url 'admin_monthly_fees' %}">Monthly Fees</a>
+        <a href="{% url 'admin_feedback' %}">Feedback</a>
+        <a href="{% url 'admin_contact_submissions' %}">Contact Messages</a>
+        <a href="{% url 'admin_contact_info' %}">Contact Info</a>
+        <a href="{% url 'admin_profile' %}">Admin Profile</a>
+        <a href="{% url 'logout' %}">Logout</a>
+    {% else %}
+        <a href="{% url 'dashboard' %}">Dashboard</a>
+        <a href="{% url 'join' %}">Join With Us</a>
+        <a href="{% url 'dashboard_course_details' %}">Course Details</a>
+        <a href="{% url 'dashboard_timetable' %}">Timetable</a>
+        <a href="{% url 'online_classes' %}">Online Class</a>
+        <a href="{% url 'monthly_fee_payment' %}">Fee Payment</a>
+        <a href="{% url 'instructors' %}">Instructor Details</a>
+        <a href="{% url 'gallery' %}">Gallery</a>
+        <a href="{% url 'profile' %}">Profile</a>
+        <a href="{% url 'feedback' %}">Feedback</a>
+        <a href="{% url 'contact_us' %}">Contact Us</a>
+        <a href="{% url 'logout' %}">Logout</a>
+    {% endif %}
+
+</div>
+
+{% else %}
+
+<!-- PUBLIC TOPBAR -->
+<div class="topbar">
+    <h2>Samskriti Nrithakalari</h2>
+    <div style="margin-left:auto;">
+        <a href="/">Home</a>
+        <a href="{% url 'course_details' %}">Courses</a>
+        <a href="/login/">Login</a>
+    </div>
+</div>
+
+{% endif %}
+
+<!-- CONTENT -->
+<div class="content">
+    {% block content %}
+    {% endblock %}
+</div>
+
+<script>
+function toggleMenu(){
+    document.getElementById("sidebar").classList.toggle("show");
+}
+</script>
+
+</body>
+</html>

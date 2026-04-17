@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div style="max-width:900px;margin:40px auto;padding:20px;">
+    <h2 style="text-align:center;color:#8B0000;margin-bottom:20px;">Monthly Fee Payment</h2>
+
+    <div style="background:white;border:1px solid #eee;border-radius:20px;padding:20px;box-shadow:0 10px 40px rgba(0,0,0,0.04);">
+        <div style="margin-bottom:10px;">
+            <b>Course:</b>
+            {% if course %}
+                {{ course.name }}
+            {% else %}
+                -
+            {% endif %}
+        </div>
+
+        <div style="margin-bottom:10px;">
+            <b>Amount:</b>
+            {{ amount }}
+        </div>
+
+        <div style="margin-bottom:10px;">
+            <b>Cycle:</b> {{ cycle_key }}
+        </div>
+
+        <div style="margin-bottom:16px;color:#666;">
+            <b>Cycle Start:</b> {{ cycle_start }}<br/>
+            <b>Cycle End:</b> {{ cycle_end }}
+        </div>
+
+        {% if payment %}
+            <div style="padding:14px 16px;border-radius:14px;background:#eaffea;border:1px solid #b7f0b7;margin-bottom:14px;">
+                <span style="color:green;font-weight:900;">Already Paid</span>
+                <div style="margin-top:6px;color:#333;">
+                    Payment ID: {{ payment.payment_id }}
+                </div>
+            </div>
+        {% else %}
+            <div style="padding:14px 16px;border-radius:14px;background:#fff7e6;border:1px solid #ffe2a8;margin-bottom:14px;">
+                <span style="color:#b36b00;font-weight:900;">Amount Due</span>
+                <div style="margin-top:6px;color:#333;">
+                    Please pay to enable online class joining for this cycle.
+                </div>
+            </div>
+
+            <form method="POST">
+                {% csrf_token %}
+                <button type="submit" style="width:100%;padding:12px 18px;border:none;border-radius:14px;background:#8B1E3F;color:white;font-weight:900;cursor:pointer;">
+                    Pay Monthly Fee
+                </button>
+            </form>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
+
